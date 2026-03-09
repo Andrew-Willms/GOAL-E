@@ -52,11 +52,11 @@ minimum_value: int = 0
 maximum_value: int = 255
 
 cv.namedWindow("Filtered Orange")
-cv.createTrackbar("minimum hue", "Filtered Orange", minimum_hue, 0, nothing)
+cv.createTrackbar("minimum hue", "Filtered Orange", minimum_hue, 179, nothing)
 cv.createTrackbar("maximum hue", "Filtered Orange", maximum_hue, 179, nothing)
-cv.createTrackbar("minimum saturation", "Filtered Orange", minimum_saturation, 0, nothing)
+cv.createTrackbar("minimum saturation", "Filtered Orange", minimum_saturation, 255, nothing)
 cv.createTrackbar("maximum saturation", "Filtered Orange", maximum_saturation, 255, nothing)
-cv.createTrackbar("minimum value", "Filtered Orange", minimum_value, 0, nothing)
+cv.createTrackbar("minimum value", "Filtered Orange", minimum_value, 255, nothing)
 cv.createTrackbar("maximum value", "Filtered Orange", maximum_value, 255, nothing)
 
 while True:
