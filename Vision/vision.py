@@ -22,7 +22,7 @@ def contour_center(contour) -> tuple[int, int]:
 
     moments: dict[str, float] = cv.moments(contour)
 
-    if moments["m00"]:
+    if moments["m00"] == 0:
         return 0, 0
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
