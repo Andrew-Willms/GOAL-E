@@ -20,12 +20,12 @@ def nothing(x):
 
 def run_cv():
 
-    minimum_hue = cv.getTrackbarPos("minimum hue", "sliders")
-    maximum_hue = cv.getTrackbarPos("maximum hue", "sliders")
-    minimum_saturation = cv.getTrackbarPos("minimum saturation", "sliders")
-    maximum_saturation = cv.getTrackbarPos("maximum saturation", "sliders")
-    minimum_value = cv.getTrackbarPos("minimum value", "sliders")
-    maximum_value = cv.getTrackbarPos("maximum value", "sliders")
+    minimum_hue = cv.getTrackbarPos("minimum hue", "Filtered Orange")
+    maximum_hue = cv.getTrackbarPos("maximum hue", "Filtered Orange")
+    minimum_saturation = cv.getTrackbarPos("minimum saturation", "Filtered Orange")
+    maximum_saturation = cv.getTrackbarPos("maximum saturation", "Filtered Orange")
+    minimum_value = cv.getTrackbarPos("minimum value", "Filtered Orange")
+    maximum_value = cv.getTrackbarPos("maximum value", "Filtered Orange")
 
     lower_bound = np.array([minimum_hue, minimum_saturation, minimum_value])
     upper_bound = np.array([maximum_hue, maximum_saturation, maximum_value])
@@ -51,12 +51,12 @@ maximum_saturation: int = 255
 minimum_value: int = 0
 maximum_value: int = 255
 
-cv.createTrackbar("minimum hue", "sliders", minimum_hue, 0, nothing)
-cv.createTrackbar("maximum hue", "sliders", maximum_hue, 179, nothing)
-cv.createTrackbar("minimum saturation", "sliders", minimum_saturation, 0, nothing)
-cv.createTrackbar("maximum saturation", "sliders", maximum_saturation, 255, nothing)
-cv.createTrackbar("minimum value", "sliders", minimum_value, 0, nothing)
-cv.createTrackbar("maximum value", "sliders", maximum_value, 255, nothing)
+cv.createTrackbar("minimum hue", "Filtered Orange", minimum_hue, 0, nothing)
+cv.createTrackbar("maximum hue", "Filtered Orange", maximum_hue, 179, nothing)
+cv.createTrackbar("minimum saturation", "Filtered Orange", minimum_saturation, 0, nothing)
+cv.createTrackbar("maximum saturation", "Filtered Orange", maximum_saturation, 255, nothing)
+cv.createTrackbar("minimum value", "Filtered Orange", minimum_value, 0, nothing)
+cv.createTrackbar("maximum value", "Filtered Orange", maximum_value, 255, nothing)
 
 while True:
 
