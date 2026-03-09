@@ -65,7 +65,7 @@ def run_cv():
     center = contour_center(largest_contour)
     cv.circle(mask, center, 5, (0, 0, 255), -1)
 
-    data = min(30, max(center[0], 270))
+    data = max(30, min(center[0], 270))
     print(data)
 
     serial_port.write(center[0])
