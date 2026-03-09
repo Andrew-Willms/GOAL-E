@@ -13,7 +13,7 @@ camera.set(cv.CAP_PROP_FPS, 30)
 
 # Color thresholds
 lower_bound = np.array([5, 150, 150])
-upper_bound = np.array([20, 255, 255])
+upper_bound = np.array([127, 255, 255])
 
 def run_cv():
 
