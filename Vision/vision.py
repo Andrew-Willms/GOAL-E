@@ -11,6 +11,9 @@ camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv.CAP_PROP_FPS, 30)
 
+busPin = 0x8 # bus address
+bus = SMBus(1) # /dev/i2c-1
+
 # Color thresholds
 #lower_bound = np.array([5, 150, 150])
 #upper_bound = np.array([127, 255, 255])
@@ -62,6 +65,8 @@ def run_cv():
     cv.circle(mask, center, 5, (0, 0, 255), -1)
 
     print(center)
+
+    bus.write_block_data(busPin, 0x0, center[0])
 
     # Show windows
     cv.imshow("Original", frame)
