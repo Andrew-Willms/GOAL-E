@@ -6,7 +6,7 @@ import time
 from enum import Enum
 
 # Initialize camera parameters
-camera = cv.VideoCapture(0)
+camera = cv.VideoCapture(1)
 camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv.CAP_PROP_FPS, 30)
