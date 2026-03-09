@@ -12,10 +12,20 @@ camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv.CAP_PROP_FPS, 30)
 
 # Color thresholds
-lower_bound = np.array([5, 150, 150])
-upper_bound = np.array([127, 255, 255])
+#lower_bound = np.array([5, 150, 150])
+#upper_bound = np.array([127, 255, 255])
 
 def run_cv():
+
+    minimum_hue = cv.getTrackbarPos("minimum hue", "sliders")
+    maximum_hue = cv.getTrackbarPos("maximum hue", "sliders")
+    minimum_saturation = cv.getTrackbarPos("minimum saturation", "sliders")
+    maximum_saturation = cv.getTrackbarPos("maximum saturation", "sliders")
+    minimum_value = cv.getTrackbarPos("minimum value", "sliders")
+    maximum_value = cv.getTrackbarPos("maximum value", "sliders")
+
+    lower_bound = np.array([minimum_hue, minimum_saturation, minimum_value])
+    upper_bound = np.array([maximum_hue, maximum_saturation, maximum_value])
 
     successfulRead, frame = camera.read()
     if not successfulRead:
@@ -30,6 +40,20 @@ def run_cv():
     cv.imshow("Original", frame)
     cv.imshow("Orange Mask", mask)
     cv.imshow("Filtered Orange", result)
+
+minimum_hue: int = 0
+maximum_hue: int = 179
+minimum_saturation: int = 0
+maximum_saturation: int = 255
+minimum_value: int = 0
+maximum_value: int = 255
+
+cv.createTrackbar("minimum hue", "sliders", minimum_hue, 0)
+cv.createTrackbar("maximum hue", "sliders", maximum_hue, 179)
+cv.createTrackbar("minimum saturation", "sliders", minimum_saturation, 0)
+cv.createTrackbar("maximum saturation", "sliders", maximum_saturation, 255)
+cv.createTrackbar("minimum value", "sliders", minimum_value, 0)
+cv.createTrackbar("maximum value", "sliders", maximum_value, 255)
 
 while True:
 
