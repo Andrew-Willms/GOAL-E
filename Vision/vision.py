@@ -53,17 +53,15 @@ def run_cv():
 
     contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-    if len(contours) > 0:
-        largest_contour = max(contours, key=cv.contourArea)
-    else:
-        largest_contour = None
-
-    if largest_contour.any() == False:
+    if len(contours) == 0:
         print("No ball found")
         return
 
+    largest_contour = max(contours, key=cv.contourArea)
     center = contour_center(largest_contour)
-    cv.circle(mask, center, 2, (0, 0, 255), -1)
+    cv.circle(mask, center, 5, (0, 0, 255), -1)
+
+    print(center)
 
     # Show windows
     cv.imshow("Original", frame)
