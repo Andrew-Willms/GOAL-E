@@ -3,6 +3,7 @@ from smbus2 import SMBus
 import cv2 as cv
 import numpy as np
 import time
+import serial
 from enum import Enum
 
 # Initialize camera parameters
@@ -11,12 +12,12 @@ camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv.CAP_PROP_FPS, 30)
 
-busPin = 0x8 # bus address
-bus = SMBus(1) # /dev/i2c-1
-
 # Color thresholds
 #lower_bound = np.array([5, 150, 150])
 #upper_bound = np.array([127, 255, 255])
+
+serial_port = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+time.sleep(2)  # allow Arduino to reset
 
 def nothing(x):
     pass
@@ -66,7 +67,9 @@ def run_cv():
 
     print(center)
 
-    bus.write_block_data(busPin, 0x0, center[0])
+    data = min(30, max(center[0], 270))
+
+    serial_port.write(center[0])
 
     # Show windows
     cv.imshow("Original", frame)
@@ -86,6 +89,8 @@ cv.createTrackbar("minimum saturation", "Mask", minimum_saturation, 255, nothing
 cv.createTrackbar("maximum saturation", "Mask", maximum_saturation, 255, nothing)
 cv.createTrackbar("minimum value", "Mask", minimum_value, 255, nothing)
 cv.createTrackbar("maximum value", "Mask", maximum_value, 255, nothing)
+
+
 
 while True:
 
