@@ -6,7 +6,7 @@ import time
 from enum import Enum
 
 # Initialize camera parameters
-camera = cv.VideoCapture(1)
+camera = cv.VideoCapture(0)
 camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv.CAP_PROP_FPS, 30)
@@ -31,7 +31,7 @@ def run_cv():
     cv.imshow("Orange Mask", mask)
     cv.imshow("Filtered Orange", result)
 
-for i in range(0, 10):
+while True:
 
     run_cv()
 
