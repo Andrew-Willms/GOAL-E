@@ -31,7 +31,7 @@ def run_cv():
     cv.imshow("Orange Mask", mask)
     cv.imshow("Filtered Orange", result)
 
-while True:
+for i in range(0, 10):
 
     run_cv()
 
