@@ -3,7 +3,7 @@ from smbus2 import SMBus
 import cv2 as cv
 import numpy as np
 import time
-import serial
+#import serial
 from enum import Enum
 
 # Initialize camera parameters
@@ -16,8 +16,8 @@ camera.set(cv.CAP_PROP_FPS, 30)
 #lower_bound = np.array([5, 150, 150])
 #upper_bound = np.array([127, 255, 255])
 
-serial_port = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
-time.sleep(2)  # allow Arduino to reset
+#serial_port = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+#time.sleep(2)  # allow Arduino to reset
 
 def nothing(x):
     pass
@@ -68,7 +68,7 @@ def run_cv():
     data = max(30, min(center[0], 270))
     print(data)
 
-    serial_port.write(center[0])
+    #serial_port.write(center[0])
 
     # Show windows
     cv.imshow("Original", frame)
