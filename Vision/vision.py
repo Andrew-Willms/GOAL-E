@@ -31,5 +31,14 @@ def run_cv():
     cv.imshow("Orange Mask", mask)
     cv.imshow("Filtered Orange", result)
 
+while True:
+
+    run_cv()
+
+    # Press q to quit
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+
 camera.release()
 cv.destroyAllWindows()
