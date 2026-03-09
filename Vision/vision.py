@@ -18,14 +18,23 @@ camera.set(cv.CAP_PROP_FPS, 30)
 def nothing(x):
     pass
 
+def contour_center(contour) -> tuple[int, int]:
+
+    moments: dict[str, float] = cv.moments(contour)
+
+    if moments["m00"]:
+        return 0, 0
+
+    return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
+
 def run_cv():
 
-    minimum_hue = cv.getTrackbarPos("minimum hue", "Filtered Orange")
-    maximum_hue = cv.getTrackbarPos("maximum hue", "Filtered Orange")
-    minimum_saturation = cv.getTrackbarPos("minimum saturation", "Filtered Orange")
-    maximum_saturation = cv.getTrackbarPos("maximum saturation", "Filtered Orange")
-    minimum_value = cv.getTrackbarPos("minimum value", "Filtered Orange")
-    maximum_value = cv.getTrackbarPos("maximum value", "Filtered Orange")
+    minimum_hue = cv.getTrackbarPos("minimum hue", "Mask")
+    maximum_hue = cv.getTrackbarPos("maximum hue", "Mask")
+    minimum_saturation = cv.getTrackbarPos("minimum saturation", "Mask")
+    maximum_saturation = cv.getTrackbarPos("maximum saturation", "Mask")
+    minimum_value = cv.getTrackbarPos("minimum value", "Mask")
+    maximum_value = cv.getTrackbarPos("maximum value", "Mask")
 
     lower_bound = np.array([minimum_hue, minimum_saturation, minimum_value])
     upper_bound = np.array([maximum_hue, maximum_saturation, maximum_value])
@@ -37,15 +46,24 @@ def run_cv():
     
     hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
     mask = cv.inRange(hsv, lower_bound, upper_bound)
-    result = cv.bitwise_and(frame, frame, mask=mask)
 
     kernel = np.ones((5,5), np.uint8)
     mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
     mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
 
+    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+
+    largest_contour = max(contours, key=cv.contourArea)
+    if largest_contour == None:
+        print("No ball found")
+        return
+
+    center = contour_center(largest_contour)
+    cv.circle(mask, center, 2, (0, 0, 255), -1)
+
     # Show windows
     cv.imshow("Original", frame)
-    cv.imshow("Filtered Orange", result)
+    cv.imshow("Mask", mask)
 
 minimum_hue: int = 138
 maximum_hue: int = 177
@@ -54,13 +72,13 @@ maximum_saturation: int = 255
 minimum_value: int = 190
 maximum_value: int = 255
 
-cv.namedWindow("Filtered Orange")
-cv.createTrackbar("minimum hue", "Filtered Orange", minimum_hue, 179, nothing)
-cv.createTrackbar("maximum hue", "Filtered Orange", maximum_hue, 179, nothing)
-cv.createTrackbar("minimum saturation", "Filtered Orange", minimum_saturation, 255, nothing)
-cv.createTrackbar("maximum saturation", "Filtered Orange", maximum_saturation, 255, nothing)
-cv.createTrackbar("minimum value", "Filtered Orange", minimum_value, 255, nothing)
-cv.createTrackbar("maximum value", "Filtered Orange", maximum_value, 255, nothing)
+cv.namedWindow("Mask")
+cv.createTrackbar("minimum hue", "Mask", minimum_hue, 179, nothing)
+cv.createTrackbar("maximum hue", "Mask", maximum_hue, 179, nothing)
+cv.createTrackbar("minimum saturation", "Mask", minimum_saturation, 255, nothing)
+cv.createTrackbar("maximum saturation", "Mask", maximum_saturation, 255, nothing)
+cv.createTrackbar("minimum value", "Mask", minimum_value, 255, nothing)
+cv.createTrackbar("maximum value", "Mask", maximum_value, 255, nothing)
 
 while True:
 
