@@ -15,6 +15,9 @@ camera.set(cv.CAP_PROP_FPS, 30)
 #lower_bound = np.array([5, 150, 150])
 #upper_bound = np.array([127, 255, 255])
 
+def nothing(x):
+    pass
+
 def run_cv():
 
     minimum_hue = cv.getTrackbarPos("minimum hue", "sliders")
@@ -48,12 +51,12 @@ maximum_saturation: int = 255
 minimum_value: int = 0
 maximum_value: int = 255
 
-cv.createTrackbar("minimum hue", "sliders", minimum_hue, 0)
-cv.createTrackbar("maximum hue", "sliders", maximum_hue, 179)
-cv.createTrackbar("minimum saturation", "sliders", minimum_saturation, 0)
-cv.createTrackbar("maximum saturation", "sliders", maximum_saturation, 255)
-cv.createTrackbar("minimum value", "sliders", minimum_value, 0)
-cv.createTrackbar("maximum value", "sliders", maximum_value, 255)
+cv.createTrackbar("minimum hue", "sliders", minimum_hue, 0, nothing)
+cv.createTrackbar("maximum hue", "sliders", maximum_hue, 179, nothing)
+cv.createTrackbar("minimum saturation", "sliders", minimum_saturation, 0, nothing)
+cv.createTrackbar("maximum saturation", "sliders", maximum_saturation, 255, nothing)
+cv.createTrackbar("minimum value", "sliders", minimum_value, 0, nothing)
+cv.createTrackbar("maximum value", "sliders", maximum_value, 255, nothing)
 
 while True:
 
