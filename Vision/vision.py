@@ -51,6 +51,7 @@ maximum_saturation: int = 255
 minimum_value: int = 0
 maximum_value: int = 255
 
+cv.namedWindow("Filtered Orange")
 cv.createTrackbar("minimum hue", "Filtered Orange", minimum_hue, 0, nothing)
 cv.createTrackbar("maximum hue", "Filtered Orange", maximum_hue, 179, nothing)
 cv.createTrackbar("minimum saturation", "Filtered Orange", minimum_saturation, 0, nothing)
