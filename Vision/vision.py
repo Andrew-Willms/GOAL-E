@@ -39,16 +39,19 @@ def run_cv():
     mask = cv.inRange(hsv, lower_bound, upper_bound)
     result = cv.bitwise_and(frame, frame, mask=mask)
 
+    kernel = np.ones((5,5), np.uint8)
+    mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
+    mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
+
     # Show windows
     cv.imshow("Original", frame)
-    cv.imshow("Orange Mask", mask)
     cv.imshow("Filtered Orange", result)
 
-minimum_hue: int = 0
-maximum_hue: int = 179
-minimum_saturation: int = 0
+minimum_hue: int = 138
+maximum_hue: int = 177
+minimum_saturation: int = 57
 maximum_saturation: int = 255
-minimum_value: int = 0
+minimum_value: int = 190
 maximum_value: int = 255
 
 cv.namedWindow("Filtered Orange")
