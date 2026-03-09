@@ -53,8 +53,12 @@ def run_cv():
 
     contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-    largest_contour = max(contours, key=cv.contourArea)
-    if largest_contour == None:
+    if len(contours) > 0:
+        largest_contour = max(contours, key=cv.contourArea)
+    else:
+        largest_contour = None
+
+    if largest_contour.any() == False:
         print("No ball found")
         return
 
