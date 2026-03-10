@@ -48,7 +48,7 @@ def run_cv2() -> bool:
         print("Failed to capture frame")
         return False
     
-    hsv = cv2.cv2tColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
