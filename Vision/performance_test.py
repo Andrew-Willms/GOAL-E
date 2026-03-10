@@ -95,6 +95,7 @@ print(f"frames per second: {frames_per_second}")
 # fps with no GUI: 13.9
 # fps without morph: 20.9
 # fps without center print: 21.1
+# fps with connectedComponentsWithStats instead of findContours: ~13
 
 camera.release()
 #cv2.destroyAllWindows()
