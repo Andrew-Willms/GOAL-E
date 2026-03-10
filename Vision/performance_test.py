@@ -80,8 +80,16 @@ cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
 cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
 cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
 
+starting_time_stamp: float = time.time()
+frames_processed: int = 0
+
 while run_cv2():
+    frames_processed += 1
     cv2.waitKey(1)
+    
+ending_time_stamp: float = time.time()
+frames_per_second: float = (ending_time_stamp - starting_time_stamp) / frames_processed
+print("frames per second: {frames_per_second}")
 
 camera.release()
 cv2.destroyAllWindows()
