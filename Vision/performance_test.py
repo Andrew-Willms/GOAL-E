@@ -89,7 +89,7 @@ while run_cv2():
     
 ending_time_stamp: float = time.time()
 frames_per_second: float = (ending_time_stamp - starting_time_stamp) / frames_processed
-print("frames per second: {frames_per_second}")
+print(f"frames per second: {frames_per_second}")
 
 camera.release()
 cv2.destroyAllWindows()
