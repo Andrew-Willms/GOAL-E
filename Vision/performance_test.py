@@ -69,6 +69,8 @@ def run_cv2() -> bool:
     cv2.imshow("Original", frame)
     cv2.imshow("Mask", mask)
 
+    return True
+
 # Initialize Sliders
 cv2.namedWindow("Mask")
 cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
