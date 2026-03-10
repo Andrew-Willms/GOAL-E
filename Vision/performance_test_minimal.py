@@ -43,7 +43,7 @@ def run_cv2() -> bool:
         return True
 
     largest = 1 + numpy.argmax(stats[1:, cv2.CC_STAT_AREA])
-    center = centroids(largest)
+    center = centroids[largest]
 
     #print(center)
 
