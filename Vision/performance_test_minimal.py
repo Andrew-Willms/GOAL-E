@@ -18,8 +18,6 @@ if not camera.isOpened():
 lower_bound = numpy.array([54, 34, 140])
 upper_bound = numpy.array([144, 92, 255])
 
-morph_kernel = numpy.ones((3,3), numpy.uint8)
-
 def contour_center(contour) -> tuple[int, int]:
 
     moments: dict[str, float] = cv2.moments(contour)
@@ -42,9 +40,6 @@ def run_cv2() -> bool:
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #mask = cv2.inRange(hsv, lower_bound, upper_bound)
     mask = cv2.inRange(frame, lower_bound, upper_bound)
-
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
