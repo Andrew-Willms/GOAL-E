@@ -18,7 +18,7 @@ if not camera.isOpened():
 lower_bound = numpy.array([54, 34, 140])
 upper_bound = numpy.array([144, 92, 255])
 
-morph_kernel = numpy.ones((5,5), numpy.uint8)
+morph_kernel = numpy.ones((3,3), numpy.uint8)
 
 def contour_center(contour) -> tuple[int, int]:
 
