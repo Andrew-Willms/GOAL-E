@@ -11,12 +11,12 @@ if not camera.isOpened():
     exit()
 
 # Color thresholds
-#lower_bound = numpy.array([138, 57, 190])
-#upper_bound = numpy.array([177, 255, 255])
+lower_bound = numpy.array([138, 57, 190])
+upper_bound = numpy.array([177, 255, 255])
 
 # BGR Thresholds
-lower_bound = numpy.array([54, 34, 140])
-upper_bound = numpy.array([144, 92, 255])
+#lower_bound = numpy.array([54, 34, 140])
+#upper_bound = numpy.array([144, 92, 255])
 
 def contour_center(contour) -> tuple[int, int]:
 
@@ -37,9 +37,9 @@ def run_cv2() -> bool:
         print("Failed to capture frame")
         return False
     
-    #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    #mask = cv2.inRange(hsv, lower_bound, upper_bound)
-    mask = cv2.inRange(frame, lower_bound, upper_bound)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower_bound, upper_bound)
+    #mask = cv2.inRange(frame, lower_bound, upper_bound)
 
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
