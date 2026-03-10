@@ -12,8 +12,8 @@ if not camera.isOpened():
 morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Color thresholds
-lower_bound = numpy.array([138, 57, 190])
-upper_bound = numpy.array([177, 255, 255])
+lower_bound = numpy.array([54, 34, 140])
+upper_bound = numpy.array([144, 92, 255])
 
 def nothing(x):
     pass
@@ -34,12 +34,12 @@ def run_cv2() -> bool:
     global lower_bound
     global upper_bound
 
-    lower_bound[0] = cv2.getTrackbarPos("minimum B", "Mask")
-    upper_bound[0] = cv2.getTrackbarPos("maximum B", "Mask")
-    lower_bound[1] = cv2.getTrackbarPos("minimum G", "Mask")
-    upper_bound[1] = cv2.getTrackbarPos("maximum G", "Mask")
-    lower_bound[2] = cv2.getTrackbarPos("minimum R", "Mask")
-    upper_bound[2] = cv2.getTrackbarPos("maximum R", "Mask")
+    lower_bound[0] = cv2.getTrackbarPos("minimum B", "Window")
+    upper_bound[0] = cv2.getTrackbarPos("maximum B", "Window")
+    lower_bound[1] = cv2.getTrackbarPos("minimum G", "Window")
+    upper_bound[1] = cv2.getTrackbarPos("maximum G", "Window")
+    lower_bound[2] = cv2.getTrackbarPos("minimum R", "Window")
+    upper_bound[2] = cv2.getTrackbarPos("maximum R", "Window")
 
     successfulRead, frame = camera.read()
     if not successfulRead:
@@ -64,19 +64,20 @@ def run_cv2() -> bool:
 
     print(center)
 
-    cv2.imshow("Original", frame)
-    cv2.imshow("Mask", mask)
+    combined = numpy.hstack((frame, mask))
+
+    cv2.imshow("Window", combined)
 
     return True
 
 # Initialize Sliders
 cv2.namedWindow("Mask")
-cv2.createTrackbar("minimum B", "Mask", lower_bound[0], 255, nothing)
-cv2.createTrackbar("maximum B", "Mask", upper_bound[0], 255, nothing)
-cv2.createTrackbar("minimum G", "Mask", lower_bound[1], 255, nothing)
-cv2.createTrackbar("maximum G", "Mask", upper_bound[1], 255, nothing)
-cv2.createTrackbar("minimum R", "Mask", lower_bound[2], 255, nothing)
-cv2.createTrackbar("maximum R", "Mask", upper_bound[2], 255, nothing)
+cv2.createTrackbar("minimum B", "Window", lower_bound[0], 255, nothing)
+cv2.createTrackbar("maximum B", "Window", upper_bound[0], 255, nothing)
+cv2.createTrackbar("minimum G", "Window", lower_bound[1], 255, nothing)
+cv2.createTrackbar("maximum G", "Window", upper_bound[1], 255, nothing)
+cv2.createTrackbar("minimum R", "Window", lower_bound[2], 255, nothing)
+cv2.createTrackbar("maximum R", "Window", upper_bound[2], 255, nothing)
 
 while run_cv2():
     cv2.waitKey(1)
