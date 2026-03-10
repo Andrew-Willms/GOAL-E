@@ -13,7 +13,7 @@ if not camera.isOpened():
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv2.CAP_PROP_FPS, 30)
-morph_kernel = numpy.ones((5,5), numpy.uint8)
+#morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Color thresholds
 lower_bound = numpy.array([138, 57, 190])
@@ -51,8 +51,8 @@ def run_cv2() -> bool:
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
+    #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
+    #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -88,10 +88,11 @@ while run_cv2():
     #cv2.waitKey(1)
     
 ending_time_stamp: float = time.time()
-frames_per_second: float = (ending_time_stamp - starting_time_stamp) / frames_processed
+frames_per_second: float = frames_processed / (ending_time_stamp - starting_time_stamp)
 print(f"frames per second: {frames_per_second}")
 
-# fps with everything: 0.1711
+# fps with GUI: 5.8
+# fps with no GUI: 13.9
 
 camera.release()
 #cv2.destroyAllWindows()
