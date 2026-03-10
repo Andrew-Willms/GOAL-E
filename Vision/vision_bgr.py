@@ -64,7 +64,8 @@ def run_cv2() -> bool:
 
     print(center)
 
-    combined = numpy.hstack((frame, mask))
+    colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    combined = numpy.hstack((frame, colorized_mask))
 
     cv2.imshow("Window", combined)
 
