@@ -27,6 +27,10 @@ def contour_center(contour) -> tuple[int, int]:
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
+conversion_time: float = 0
+ranging_time: float = 0
+contour_time: float = 0
+
 def run_cv2() -> bool:
 
     global lower_bound
@@ -37,10 +41,15 @@ def run_cv2() -> bool:
         print("Failed to capture frame")
         return False
     
+    current_time: float = time.time()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower_bound, upper_bound)
-    #mask = cv2.inRange(frame, lower_bound, upper_bound)
+    conversion_time += time.time() - current_time
 
+    current_time = time.time()
+    mask = cv2.inRange(hsv, lower_bound, upper_bound)
+    ranging_time += time.time() - current_time
+
+    current_time = time.time()
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
@@ -49,6 +58,7 @@ def run_cv2() -> bool:
 
     largest_contour = max(contours, key=cv2.contourArea)
     center = contour_center(largest_contour)
+    contour_time += time.time() - current_time
 
     #print(center)
 
@@ -63,5 +73,9 @@ while run_cv2():
 ending_time_stamp: float = time.time()
 frames_per_second: float = frames_processed / (ending_time_stamp - starting_time_stamp)
 print(f"frames per second: {frames_per_second}")
+
+print(f"conversion time: {conversion_time}")
+print(f"ranging time: {ranging_time}")
+print(f"contour time: {contour_time}")
 
 camera.release()
