@@ -85,7 +85,7 @@ frames_processed: int = 0
 
 while run_cv2():
     frames_processed += 1
-    cv2.waitKey(1)
+    #cv2.waitKey(1)
     
 ending_time_stamp: float = time.time()
 frames_per_second: float = (ending_time_stamp - starting_time_stamp) / frames_processed
@@ -94,4 +94,4 @@ print(f"frames per second: {frames_per_second}")
 # fps with everything: 0.1711
 
 camera.release()
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()
