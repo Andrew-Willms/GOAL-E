@@ -38,7 +38,7 @@ def run_cv2() -> bool:
 
     label_count, labels, stats, centroids = cv2.connectedComponentsWithStats(mask)
 
-    if len(label_count) == 0:
+    if label_count <= 0:
         print("No ball found")
         return True
 
