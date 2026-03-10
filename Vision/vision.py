@@ -15,15 +15,6 @@ morph_kernel = numpy.ones((5,5), numpy.uint8)
 lower_bound = numpy.array([138, 57, 190])
 upper_bound = numpy.array([177, 255, 255])
 
-# Initialize Sliders
-cv2.namedWindow("Mask")
-cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
-cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, nothing)
-cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, nothing)
-cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
-cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
-cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
-
 def nothing(x):
     pass
 
@@ -36,7 +27,10 @@ def contour_center(contour) -> tuple[int, int]:
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
-def run_cv2():
+def run_cv2() -> bool:
+
+    global lower_bound
+    global upper_bound
 
     lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Mask")
     upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Mask")
@@ -48,7 +42,7 @@ def run_cv2():
     successfulRead, frame = camera.read()
     if not successfulRead:
         print("Failed to capture frame")
-        return
+        return False
     
     hsv = cv2.cv2tColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
@@ -60,7 +54,7 @@ def run_cv2():
 
     if len(contours) == 0:
         print("No ball found")
-        return
+        return True
 
     largest_contour = max(contours, key=cv2.contourArea)
     center = contour_center(largest_contour)
@@ -71,13 +65,17 @@ def run_cv2():
     cv2.imshow("Original", frame)
     cv2.imshow("Mask", mask)
 
-while True:
+# Initialize Sliders
+cv2.namedWindow("Mask")
+cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
+cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, nothing)
+cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, nothing)
+cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
+cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
+cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
 
-    run_cv2()
-
-    # Press q to quit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+while run_cv2():
+    pass
 
 camera.release()
 cv2.destroyAllWindows()
