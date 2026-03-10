@@ -50,7 +50,7 @@ def run_cv2() -> bool:
     largest_contour = max(contours, key=cv2.contourArea)
     center = contour_center(largest_contour)
 
-    print(center)
+    #print(center)
 
     return True
 
