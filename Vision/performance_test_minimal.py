@@ -85,6 +85,7 @@ frames_per_second: float = frames_processed / (ending_time_stamp - starting_time
 print(f"frames per second: {frames_per_second}")
 
 print(f"total time: {ending_time_stamp - starting_time_stamp}")
+print(f"capture time: {capture_time}")
 print(f"conversion time: {conversion_time}")
 print(f"ranging time: {ranging_time}")
 print(f"contour time: {contour_time}")
