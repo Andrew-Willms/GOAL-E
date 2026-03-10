@@ -10,9 +10,9 @@ if not camera.isOpened():
     print("couldn't open video file")
     exit()
 
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-camera.set(cv2.CAP_PROP_FPS, 30)
+#camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+#camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+#camera.set(cv2.CAP_PROP_FPS, 30)
 #morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Color thresholds
@@ -93,6 +93,7 @@ print(f"frames per second: {frames_per_second}")
 
 # fps with GUI: 5.8
 # fps with no GUI: 13.9
+# fps without morph: 20.9
 
 camera.release()
 #cv2.destroyAllWindows()
