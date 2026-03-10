@@ -71,7 +71,7 @@ def run_cv2() -> bool:
     return True
 
 # Initialize Sliders
-cv2.namedWindow("Mask")
+cv2.namedWindow("Window")
 cv2.createTrackbar("minimum B", "Window", lower_bound[0], 255, nothing)
 cv2.createTrackbar("maximum B", "Window", upper_bound[0], 255, nothing)
 cv2.createTrackbar("minimum G", "Window", lower_bound[1], 255, nothing)
