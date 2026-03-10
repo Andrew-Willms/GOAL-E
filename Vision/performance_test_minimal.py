@@ -27,6 +27,7 @@ def contour_center(contour) -> tuple[int, int]:
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
+capture_time: float = 0
 conversion_time: float = 0
 ranging_time: float = 0
 contour_time: float = 0
@@ -36,14 +37,18 @@ def run_cv2() -> bool:
     global lower_bound
     global upper_bound
 
+    global capture_time
     global conversion_time
     global ranging_time
     global contour_time
 
+
+    current_time: float = time.time()
     successfulRead, frame = camera.read()
     if not successfulRead:
         print("Failed to capture frame")
         return False
+    capture_time += time.time() - current_time
     
     current_time: float = time.time()
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -79,6 +84,7 @@ ending_time_stamp: float = time.time()
 frames_per_second: float = frames_processed / (ending_time_stamp - starting_time_stamp)
 print(f"frames per second: {frames_per_second}")
 
+print(f"total time: {ending_time_stamp - starting_time_stamp}")
 print(f"conversion time: {conversion_time}")
 print(f"ranging time: {ranging_time}")
 print(f"contour time: {contour_time}")
