@@ -81,7 +81,7 @@ cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
 cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
 
 while run_cv2():
-    cv2.waitKey(0)
+    cv2.waitKey(1)
 
 camera.release()
 cv2.destroyAllWindows()
