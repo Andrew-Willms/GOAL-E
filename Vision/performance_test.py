@@ -19,8 +19,8 @@ morph_kernel = numpy.ones((5,5), numpy.uint8)
 lower_bound = numpy.array([138, 57, 190])
 upper_bound = numpy.array([177, 255, 255])
 
-def nothing(x):
-    pass
+#def nothing(x):
+#    pass
 
 def contour_center(contour) -> tuple[int, int]:
 
@@ -36,12 +36,12 @@ def run_cv2() -> bool:
     global lower_bound
     global upper_bound
 
-    lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Mask")
-    upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Mask")
-    lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Mask")
-    upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Mask")
-    lower_bound[2] = cv2.getTrackbarPos("minimum value", "Mask")
-    upper_bound[2] = cv2.getTrackbarPos("maximum value", "Mask")
+    #lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Mask")
+    #upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Mask")
+    #lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Mask")
+    #upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Mask")
+    #lower_bound[2] = cv2.getTrackbarPos("minimum value", "Mask")
+    #upper_bound[2] = cv2.getTrackbarPos("maximum value", "Mask")
 
     successfulRead, frame = camera.read()
     if not successfulRead:
@@ -62,23 +62,23 @@ def run_cv2() -> bool:
 
     largest_contour = max(contours, key=cv2.contourArea)
     center = contour_center(largest_contour)
-    cv2.circle(mask, center, 5, (0, 0, 255), -1)
+    #cv2.circle(mask, center, 5, (0, 0, 255), -1)
 
     print(center)
 
-    cv2.imshow("Original", frame)
-    cv2.imshow("Mask", mask)
+    #cv2.imshow("Original", frame)
+    #cv2.imshow("Mask", mask)
 
     return True
 
 # Initialize Sliders
-cv2.namedWindow("Mask")
-cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
-cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, nothing)
-cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, nothing)
-cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
-cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
-cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
+#cv2.namedWindow("Mask")
+#cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
+#cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, nothing)
+#cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, nothing)
+#cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
+#cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
+#cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
 
 starting_time_stamp: float = time.time()
 frames_processed: int = 0
@@ -90,6 +90,8 @@ while run_cv2():
 ending_time_stamp: float = time.time()
 frames_per_second: float = (ending_time_stamp - starting_time_stamp) / frames_processed
 print(f"frames per second: {frames_per_second}")
+
+# fps with everything: 0.1711
 
 camera.release()
 cv2.destroyAllWindows()
