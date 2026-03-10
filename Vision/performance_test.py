@@ -94,6 +94,7 @@ print(f"frames per second: {frames_per_second}")
 # fps with GUI: 5.8
 # fps with no GUI: 13.9
 # fps without morph: 20.9
+# fps without center print: 21.1
 
 camera.release()
 #cv2.destroyAllWindows()
