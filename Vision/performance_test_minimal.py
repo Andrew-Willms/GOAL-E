@@ -36,6 +36,10 @@ def run_cv2() -> bool:
     global lower_bound
     global upper_bound
 
+    global conversion_time
+    global ranging_time
+    global contour_time
+
     successfulRead, frame = camera.read()
     if not successfulRead:
         print("Failed to capture frame")
