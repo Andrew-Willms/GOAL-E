@@ -5,7 +5,7 @@ import time
 from enum import Enum
 
 # Initialize Opencv2 Objects
-camera = cv2.VideoCapture("performance test.mp4")
+camera = cv2.VideoCapture("performance test - 480.mp4")
 if not camera.isOpened():
     print("couldn't open video file")
     exit()
