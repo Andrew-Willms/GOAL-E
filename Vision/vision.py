@@ -1,105 +1,83 @@
 import math
-from smbus2 import SMBus
-import cv2 as cv
-import numpy as np
+import cv2
+import numpy
 import time
-#import serial
 from enum import Enum
 
-# Initialize camera parameters
-camera = cv.VideoCapture(0)
-camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
-camera.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
-camera.set(cv.CAP_PROP_FPS, 30)
+# Initialize Opencv2 Objects
+camera = cv2.VideoCapture(0)
+camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+camera.set(cv2.CAP_PROP_FPS, 30)
+morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Color thresholds
-#lower_bound = np.array([5, 150, 150])
-#upper_bound = np.array([127, 255, 255])
+lower_bound = numpy.array([138, 57, 190])
+upper_bound = numpy.array([177, 255, 255])
 
-#serial_port = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
-#time.sleep(2)  # allow Arduino to reset
+# Initialize Sliders
+cv2.namedWindow("Mask")
+cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, nothing)
+cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, nothing)
+cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, nothing)
+cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, nothing)
+cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, nothing)
+cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, nothing)
 
 def nothing(x):
     pass
 
 def contour_center(contour) -> tuple[int, int]:
 
-    moments: dict[str, float] = cv.moments(contour)
+    moments: dict[str, float] = cv2.moments(contour)
 
     if moments["m00"] == 0:
         return 0, 0
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
 
-def run_cv():
+def run_cv2():
 
-    minimum_hue = cv.getTrackbarPos("minimum hue", "Mask")
-    maximum_hue = cv.getTrackbarPos("maximum hue", "Mask")
-    minimum_saturation = cv.getTrackbarPos("minimum saturation", "Mask")
-    maximum_saturation = cv.getTrackbarPos("maximum saturation", "Mask")
-    minimum_value = cv.getTrackbarPos("minimum value", "Mask")
-    maximum_value = cv.getTrackbarPos("maximum value", "Mask")
-
-    lower_bound = np.array([minimum_hue, minimum_saturation, minimum_value])
-    upper_bound = np.array([maximum_hue, maximum_saturation, maximum_value])
+    lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Mask")
+    upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Mask")
+    lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Mask")
+    upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Mask")
+    lower_bound[2] = cv2.getTrackbarPos("minimum value", "Mask")
+    upper_bound[2] = cv2.getTrackbarPos("maximum value", "Mask")
 
     successfulRead, frame = camera.read()
     if not successfulRead:
         print("Failed to capture frame")
         return
     
-    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-    mask = cv.inRange(hsv, lower_bound, upper_bound)
+    hsv = cv2.cv2tColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    kernel = np.ones((5,5), np.uint8)
-    mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
-    mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
-    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
         print("No ball found")
         return
 
-    largest_contour = max(contours, key=cv.contourArea)
+    largest_contour = max(contours, key=cv2.contourArea)
     center = contour_center(largest_contour)
-    cv.circle(mask, center, 5, (0, 0, 255), -1)
+    cv2.circle(mask, center, 5, (0, 0, 255), -1)
 
-    print(center[0])
-    data = max(30, min(center[0], 480))
-    print(data)
+    print(center)
 
-    #serial_port.write(center[0])
-
-    # Show windows
-    cv.imshow("Original", frame)
-    cv.imshow("Mask", mask)
-
-minimum_hue: int = 138
-maximum_hue: int = 177
-minimum_saturation: int = 57
-maximum_saturation: int = 255
-minimum_value: int = 190
-maximum_value: int = 255
-
-cv.namedWindow("Mask")
-cv.createTrackbar("minimum hue", "Mask", minimum_hue, 179, nothing)
-cv.createTrackbar("maximum hue", "Mask", maximum_hue, 179, nothing)
-cv.createTrackbar("minimum saturation", "Mask", minimum_saturation, 255, nothing)
-cv.createTrackbar("maximum saturation", "Mask", maximum_saturation, 255, nothing)
-cv.createTrackbar("minimum value", "Mask", minimum_value, 255, nothing)
-cv.createTrackbar("maximum value", "Mask", maximum_value, 255, nothing)
-
-
+    cv2.imshow("Original", frame)
+    cv2.imshow("Mask", mask)
 
 while True:
 
-    run_cv()
+    run_cv2()
 
     # Press q to quit
-    if cv.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-
 camera.release()
-cv.destroyAllWindows()
+cv2.destroyAllWindows()
