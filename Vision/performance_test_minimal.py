@@ -36,16 +36,16 @@ def run_cv2() -> bool:
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    label_count, labels, stats, centroids = cv2.connectedComponentsWithStats(mask)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    if label_count <= 0:
+    if len(contours) == 0:
         print("No ball found")
         return True
 
-    largest = 1 + numpy.argmax(stats[1:, cv2.CC_STAT_AREA])
-    center = centroids[largest]
+    largest_contour = max(contours, key=cv2.contourArea)
+    center = contour_center(largest_contour)
 
-    #print(center)
+    print(center)
 
     return True
 
