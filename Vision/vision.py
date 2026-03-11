@@ -1,4 +1,5 @@
 import math
+import serial
 import cv2
 import numpy
 import time
@@ -61,11 +62,21 @@ def run_cv2() -> bool:
     cv2.circle(mask, center, 5, (0, 0, 255), -1)
 
     print(center)
+    serial_port.write(center[0].to_bytes(2, byteorder='little')) # this should send the int as raw bytes in little edian order
 
     cv2.imshow("Original", frame)
     cv2.imshow("Mask", mask)
 
     return True
+
+serial_port = serial.Serial(
+    port='/dev/serial0',
+    baudrate=921600,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+    timeout=1
+)
 
 # Initialize Sliders
 cv2.namedWindow("Mask")
@@ -81,3 +92,4 @@ while run_cv2():
 
 camera.release()
 cv2.destroyAllWindows()
+serial_port.close()
