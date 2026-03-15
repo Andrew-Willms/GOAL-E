@@ -17,6 +17,8 @@ try:
         data: bytes = int.to_bytes(message, byteorder='big', length=2)
         serial_port.write(data)
         print(f"Sent: {message}")
+        print(data[0])
+        print(data[1])
 
         # Send a message
         #message = "Hello RS485 World!\r\n" # Add line breaks for compatibility with some assistants
