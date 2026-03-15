@@ -12,7 +12,7 @@ try:
         #message = "Hello RS485 World!\r\n" # Add line breaks for compatibility with some assistants
         message = "a" # Add line breaks for compatibility with some assistants
         #serial_port.write(message.encode())
-        serial_port.write(message.encode)
+        serial_port.write(message.encode())
         print(f"Sent: {message.strip()}")
         time.sleep(2) # Send every 2 seconds
 
