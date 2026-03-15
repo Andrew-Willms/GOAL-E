@@ -17,7 +17,7 @@ try:
         data: bytes = int.to_bytes(message, byteorder='big', length=2) # send 24 bits, first 8 are the start flag 0
         serial_port.write(data)
         #print(f"Sent: {message}")
-        print(f"Sent: {data[0]}, {data[1]}")
+        print(f"Sent: {data[0]}, {data[1]}, {message}")
 
         time.sleep(2)
 
