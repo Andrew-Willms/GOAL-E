@@ -23,9 +23,6 @@ try:
         serial_port.write(data)
         print(f"Sent: {rotation_target}, {extension_target}, {elevation_target}")
 
-        for byte_value in data:
-            print(byte_value)
-
         time.sleep(2)
 
 except KeyboardInterrupt:
