@@ -1,6 +1,7 @@
 import serial
 import time
 import random
+import struct
 
 SERIAL_PORT = "/dev/ttyS0" 
 BAUD_RATE = 115200 # Ensure the baud rate matches the receiving device
@@ -10,10 +11,13 @@ try:
     print(f'Serial port {SERIAL_PORT} opened.')
     while True:
 
-        message: int = random.randint(1, 65535) # 16 bit number
-        data: bytes = int.to_bytes(message, byteorder='big', length=3) # send 24 bits, first 8 are the start flag 0
+        rotation_target: int = random.randint(1, 65535) # 16 bit number
+        extension_target: int = random.randint(1, 65535) # 16 bit number
+        elevation_target: int = random.randint(1, 65535) # 16 bit number
+
+        data: bytes = struct.pack('>iii', rotation_target, extension_target, elevation_target)
         serial_port.write(data)
-        print(f"Sent: {message}")
+        print(f"Sent: {rotation_target}, {extension_target}, {elevation_target}")
 
         time.sleep(2)
 
