@@ -4,7 +4,7 @@ import random
 import struct
 
 SERIAL_PORT = "/dev/ttyS0" 
-BAUD_RATE = 115200 # Ensure the baud rate matches the receiving device
+BAUD_RATE = 115200
 START_MESSAGE_FLAG = 0
 
 try:
