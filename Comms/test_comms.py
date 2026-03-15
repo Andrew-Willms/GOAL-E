@@ -19,7 +19,7 @@ try:
         # > indicating Big Endian
         # B indicating an unsigned char
         # H indicating an unsigned uint16
-        data: bytes = struct.pack('>B>H>H>H', START_MESSAGE_FLAG, rotation_target, extension_target, elevation_target)
+        data: bytes = struct.pack(">B>H>H>H", START_MESSAGE_FLAG, rotation_target, extension_target, elevation_target)
         serial_port.write(data)
         print(f"Sent: {rotation_target}, {extension_target}, {elevation_target}")
 
