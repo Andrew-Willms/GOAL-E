@@ -10,23 +10,15 @@ try:
     print(f'Serial port {SERIAL_PORT} opened.')
     while True:
 
-        start_flag: bytes = int.to_bytes(0, byteorder='big', length=1)
-        serial_port.write(start_flag)
+        #start_flag: bytes = int.to_bytes(0, byteorder='big', length=1)
+        #serial_port.write(start_flag)
 
-        message: int = random.randint(1, 65535)
-        data: bytes = int.to_bytes(message, byteorder='big', length=2)
+        message: int = random.randint(1, 65535) # 16 bit number
+        data: bytes = int.to_bytes(message, byteorder='big', length=3) # send 24 bits, first 8 are the start flag 0
         serial_port.write(data)
         print(f"Sent: {message}")
-        print(data[0])
-        print(data[1])
 
-        # Send a message
-        #message = "Hello RS485 World!\r\n" # Add line breaks for compatibility with some assistants
-        #message = "a" # Add line breaks for compatibility with some assistants
-        #serial_port.write(message.encode())
-        #serial_port.write(message.encode())
-        #print(f"Sent: {message.strip()}")
-        time.sleep(2) # Send every 2 seconds
+        time.sleep(2)
 
 except KeyboardInterrupt:
     print("Exiting program.")
