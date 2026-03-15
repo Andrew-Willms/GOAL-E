@@ -16,7 +16,7 @@ try:
         extension_target: int = random.randint(1, 65535) # 16 bit number
         elevation_target: int = random.randint(1, 65535) # 16 bit number
 
-        # > indicating Big Endian
+        # < indicating Little Endian
         # B indicating an unsigned char
         # H indicating an unsigned uint16
         data: bytes = struct.pack("<BHHH", START_MESSAGE_FLAG, rotation_target, extension_target, elevation_target)
