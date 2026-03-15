@@ -6,7 +6,7 @@ void setup() {
   digitalWrite(RS485_DIR, LOW);   // start in receive mode
   
   Serial.begin(115200);           // USB debug
-  Serial1.begin(9600);            // RS485 UART
+  Serial1.begin(115200);            // RS485 UART
 
   Serial.println("setup complete");
 }
@@ -22,11 +22,13 @@ void loop() {
 
   //digitalWrite(RS485_DIR, LOW);   // back to receive
 
-  delay(1000);
-
   // receive
   if (Serial1.available()) {
-    String msg = Serial1.readString();
+    Serial.println("serial is available");
+
+    byte msg = Serial1.read();
+
+    //String msg = Serial1.readString();
     Serial.println(msg);
   }
 }
