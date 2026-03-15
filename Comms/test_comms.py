@@ -5,6 +5,7 @@ import struct
 
 SERIAL_PORT = "/dev/ttyS0" 
 BAUD_RATE = 115200 # Ensure the baud rate matches the receiving device
+START_MESSAGE_FLAG = 0
 
 try:
     serial_port = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
@@ -15,7 +16,10 @@ try:
         extension_target: int = random.randint(1, 65535) # 16 bit number
         elevation_target: int = random.randint(1, 65535) # 16 bit number
 
-        data: bytes = struct.pack('>iii', rotation_target, extension_target, elevation_target)
+        # > indicating Big Endian
+        # B indicating an unsigned char
+        # H indicating an unsigned uint16
+        data: bytes = struct.pack('>BHHH', START_MESSAGE_FLAG, rotation_target, extension_target, elevation_target)
         serial_port.write(data)
         print(f"Sent: {rotation_target}, {extension_target}, {elevation_target}")
 
