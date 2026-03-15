@@ -13,22 +13,24 @@ void setup() {
 
 void loop() {
 
-  // transmit
-  //digitalWrite(RS485_DIR, HIGH);
-
-  //Serial1.println("Hello RS485");
-
-  //Serial1.flush();                // wait for transmission
-
-  //digitalWrite(RS485_DIR, LOW);   // back to receive
-
-  // receive
   if (Serial1.available()) {
-    Serial.println("serial is available");
 
-    byte msg = Serial1.read();
+    byte start_flag = Serial1.read();
+    if (start_flag != 0) {
+      Serial.print("Out of alignment.");
+      return;
+    }
 
-    //String msg = Serial1.readString();
-    Serial.println(msg);
+    byte message_buffer[2];
+    int bytes_read = Serial1.readBytes(message_buffer, 2);
+
+    if (bytes_read != 2) {
+      Serial.print("Missing bytes.");
+      return;
+    }
+
+    uint16_t message = ((uint16_t)message_buffer[0] << 8) | message_buffer[1];
+    Serial.print("Received: ");
+    Serial.println(message);
   }
 }
