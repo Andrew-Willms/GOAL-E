@@ -10,13 +10,14 @@ try:
     print(f'Serial port {SERIAL_PORT} opened.')
     while True:
 
-        #start_flag: bytes = int.to_bytes(0, byteorder='big', length=1)
-        #serial_port.write(start_flag)
+        start_flag: bytes = int.to_bytes(0, byteorder='big', length=1)
+        serial_port.write(start_flag)
 
         message: int = random.randint(1, 65535) # 16 bit number
-        data: bytes = int.to_bytes(message, byteorder='big', length=3) # send 24 bits, first 8 are the start flag 0
+        data: bytes = int.to_bytes(message, byteorder='big', length=2) # send 24 bits, first 8 are the start flag 0
         serial_port.write(data)
-        print(f"Sent: {message}")
+        #print(f"Sent: {message}")
+        print(f"Sent: {data[1]}, {data[2]}")
 
         time.sleep(2)
 
