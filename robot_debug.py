@@ -3,6 +3,8 @@ import vision_debug
 
 NEUTRAL_POSITION = (0, 0.5, 1)
 
+DRIFT_TO_NEUTRAL_VELOCITY = ()
+
 while True:
 
 
@@ -10,6 +12,7 @@ while True:
     puck_position = vision_debug.get_puck_position()
 
     if puck_position == None:
+        continue
 
     (v_x: float, v_y: float, v_z: float) velocity = get_velocity()
 
