@@ -1,23 +1,26 @@
 import comms
+import planning
 import vision_debug
 
 NEUTRAL_POSITION = (0, 0.5, 1)
+DRIFT_TO_NEUTRAL_MAX_VELOCITY = ()
 
-DRIFT_TO_NEUTRAL_VELOCITY = ()
+last_target_position: tuple[float, float, float] = (0, 0.5, 1)
 
 while True:
 
-
-
-    puck_position = vision_debug.get_puck_position()
+    puck_position: tuple[float, float, float] = vision_debug.get_puck_position()
 
     if puck_position == None:
+        target_position = planning.drift_towards_neutral(last_target_position)
+        comms.Send_To_Arduino(target_position)
         continue
 
-    (v_x: float, v_y: float, v_z: float) velocity = get_velocity()
+    velocity: tuple[float, float, float] = planning.get_velocity()
+    goal_plane_intersection: tuple[float, float, float] = planning.goal_plane_intersection(velocity)
 
-    (rotation_target: int, extension_target: int, elevation_target: int) = get_target_position()
+    target_position: tuple[float, float, float] = planning.get_target_position()
 
 
-    comms.Send_To_Arduino(serial_port, rotation_target, extension_target, elevation_target)
+    comms.Send_To_Arduino(target_position)
 
