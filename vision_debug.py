@@ -23,6 +23,12 @@ cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, vision_uti
 cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, vision_utilities.nothing)
 cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, vision_utilities.nothing)
 
+def get_ball_camera_coords() -> tuple[float, float, float] | None:
+    return None
+
+def get_puck_position() -> (int, int, int) | None:
+    return
+
 def run_cv2() -> bool:
 
     global lower_bound
