@@ -8,7 +8,7 @@ config = picam2.create_video_configuration(
     main={"size": (2560, 720), "format": "BGR888"},
     #main={"size": (1280, 360), "format": "BGR888"},
     controls={
-        "FrameDurationLimits": (11111, 11111)  # 10,638 µs = 94 FPS max
+        "FrameDurationLimits": (11500, 11500)  # 10,638 µs = 94 FPS max
     },
 )
 
