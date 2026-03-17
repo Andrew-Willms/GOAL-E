@@ -17,19 +17,19 @@ picam2.start()
 
 start_time = time.time()
 
-for i in range(0, 1000):
+for i in range(0, 500):
 
     frame = picam2.capture_array()
     current_time = time.time()
-    #print(1.0 / (current_time - last_time))  # FPS
+    print(1.0 / (current_time - start_time))  # FPS
 
     #cv2.imshow("Frame", frame)
 
     #if cv2.waitKey(1) == ord('q'):
     #    break
 
-    last_time = current_time
+    start_time = current_time
 
-print(1000 * 1.0/(time.time() - start_time))
+print(500 * 1.0/(time.time() - start_time))
 
 cv2.destroyAllWindows()
