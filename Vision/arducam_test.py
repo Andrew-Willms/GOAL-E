@@ -31,6 +31,6 @@ for i in range(0, 500):
 
     previous_time = current_time
 
-print(500 * 1.0/(time.time() - start_time))
+print(f"average: {500 * 1.0/(time.time() - start_time)}")
 
 cv2.destroyAllWindows()
