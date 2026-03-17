@@ -13,10 +13,18 @@ from enum import Enum
 #       print("Working index:", i)
 #        cap.release()
 
+#pipeline = (
+#    "libcamerasrc ! "
+#    "video/x-raw,width=640,height=480,framerate=30/1 ! "
+#    "bayer2rgb ! "
+#    "videoconvert ! "
+#    "video/x-raw,format=BGR ! "
+#    "appsink drop=true"
+#)
+
 pipeline = (
     "libcamerasrc ! "
-    "video/x-raw,width=640,height=480,framerate=30/1 ! "
-    "bayer2rgb ! "
+    "video/x-raw,width=2560,height=720,framerate=94/1 ! "
     "videoconvert ! "
     "video/x-raw,format=BGR ! "
     "appsink drop=true"
