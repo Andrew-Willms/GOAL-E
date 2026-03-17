@@ -15,13 +15,13 @@ config = picam2.create_video_configuration(
 picam2.configure(config)
 picam2.start()
 
-last_time = time.time()
+start_time = time.time()
 
 for i in range(0, 1000):
 
     frame = picam2.capture_array()
     current_time = time.time()
-    print(1.0 / (current_time - last_time))  # FPS
+    #print(1.0 / (current_time - last_time))  # FPS
 
     #cv2.imshow("Frame", frame)
 
@@ -29,5 +29,7 @@ for i in range(0, 1000):
     #    break
 
     last_time = current_time
+
+print(1000 * 1.0/(time.time() - start_time))
 
 cv2.destroyAllWindows()
