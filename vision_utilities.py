@@ -1,7 +1,11 @@
 import cv2
 
+
+
 def nothing(x):
     pass
+
+
 
 def contour_center(contour) -> tuple[int, int]:
 

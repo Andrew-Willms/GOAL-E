@@ -1,13 +1,17 @@
 import serial
 import struct
 
+
+
 SERIAL_PORT: str = "/dev/ttyS0" 
 BAUD_RATE: int = 115200
 START_MESSAGE_FLAG: int = 0
 
 serial_port: serial = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
 
-def send_to_arduino(target_postion: tuple[int, int, int], max_power: int):
+
+
+def send_to_arduino(target_postion: tuple[float, float, float], max_power: int):
 
     # < indicating Little Endian
     # B indicating an unsigned char

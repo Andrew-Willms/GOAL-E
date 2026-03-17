@@ -1,12 +1,11 @@
 import comms
 import planning
 import vision_debug
+from robot_constants import *
 
-NEUTRAL_POSITION: tuple[float, float, float] = (0, 0.5, 1) # (rotation, extension, elevation)
-DRIFT_TO_NEUTRAL_MAX_POWER: int = 63
-REGULAR_MAX_POWER: int = 255
 
-last_target_position: tuple[float, float, float] = (0, 0.5, 1)
+
+last_target_position: tuple[float, float, float] = NEUTRAL_POSITION
 
 while True:
 
@@ -17,7 +16,4 @@ while True:
         continue
 
     target_position: tuple[float, float, float] = planning.get_target_position()
-
-
-    comms.Send_To_Arduino(target_position)
-
+    comms.send_to_arduino(target_position, REGULAR_MAX_POWER)
