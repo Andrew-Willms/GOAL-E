@@ -6,52 +6,21 @@ import time
 from enum import Enum
 from picamera2 import Picamera2
 
-# Initialize Opencv2 Objects
-
-#for i in range(6):
-#    cap = cv2.VideoCapture(i)
-#    if cap.isOpened():
-#       print("Working index:", i)
-#        cap.release()
-
-#pipeline = (
-#    "libcamerasrc ! "
-#    "video/x-raw,width=640,height=480,framerate=30/1 ! "
-#    "bayer2rgb ! "
-#    "videoconvert ! "
-#    "video/x-raw,format=BGR ! "
-#    "appsink drop=true"
-#)
-
-#pipeline = (
-#    "libcamerasrc ! "
-#    "video/x-raw,width=2560,height=720,framerate=94/1 ! "
-#    "bayer2rgb ! "
-#    "videoconvert ! "
-#    "video/x-raw,format=BGR ! "
-#    "appsink drop=true"
-#)
-
+# Initialize Cameras
 picam2 = Picamera2()
-
 config = picam2.create_video_configuration(
-    main={"size": (640, 480), "format": "RGB888"}
+    main={"size": (2560, 720), "format": "BGR888"}, # also try "YUV420"
+    controls={
+        "FrameDurationLimits": (11500, 11500)
+    },
 )
-
 picam2.configure(config)
 picam2.start()
 
-
-#camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
-#camera = cv2.VideoCapture(0)
-#camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-#camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-#camera.set(cv2.CAP_PROP_FPS, 30)
-morph_kernel = numpy.ones((5,5), numpy.uint8)
-
-# Color thresholds
+# Array objects
 lower_bound = numpy.array([138, 57, 190])
 upper_bound = numpy.array([177, 255, 255])
+morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 def nothing(x):
     pass
