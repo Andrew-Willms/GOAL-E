@@ -16,12 +16,15 @@ from enum import Enum
 pipeline = (
     "libcamerasrc ! "
     "video/x-raw,width=640,height=480,framerate=30/1 ! "
+    "bayer2rgb ! "
     "videoconvert ! "
-    "appsink"
+    "video/x-raw,format=BGR ! "
+    "appsink drop=true"
 )
 
-#camera = cv2.VideoCapture(0)
 camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+
+#camera = cv2.VideoCapture(0)
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv2.CAP_PROP_FPS, 30)
