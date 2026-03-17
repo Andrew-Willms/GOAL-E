@@ -5,8 +5,8 @@ from picamera2 import Picamera2
 picam2 = Picamera2()
 
 config = picam2.create_video_configuration(
-    #main={"size": (2560, 720), "format": "BGR888"},
-    main={"size": (1280, 360), "format": "BGR888"},
+    main={"size": (2560, 720), "format": "BGR888"},
+    #main={"size": (1280, 360), "format": "BGR888"},
     controls={
         "FrameDurationLimits": (16666, 16666)  # 10,638 µs = 94 FPS max
     },
