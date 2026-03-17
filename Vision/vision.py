@@ -7,13 +7,21 @@ from enum import Enum
 
 # Initialize Opencv2 Objects
 
-for i in range(6):
-    cap = cv2.VideoCapture(i)
-    if cap.isOpened():
-        print("Working index:", i)
-        cap.release()
+#for i in range(6):
+#    cap = cv2.VideoCapture(i)
+#    if cap.isOpened():
+#       print("Working index:", i)
+#        cap.release()
 
-camera = cv2.VideoCapture(0)
+pipeline = (
+    "libcamerasrc ! "
+    "video/x-raw,width=640,height=480,framerate=30/1 ! "
+    "videoconvert ! "
+    "appsink"
+)
+
+#camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 camera.set(cv2.CAP_PROP_FPS, 30)
