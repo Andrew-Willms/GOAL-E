@@ -25,6 +25,7 @@ from enum import Enum
 pipeline = (
     "libcamerasrc ! "
     "video/x-raw,width=2560,height=720,framerate=94/1 ! "
+    "bayer2rgb ! "
     "videoconvert ! "
     "video/x-raw,format=BGR ! "
     "appsink drop=true"
