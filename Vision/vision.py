@@ -6,6 +6,13 @@ import time
 from enum import Enum
 
 # Initialize Opencv2 Objects
+
+for i in range(6):
+    cap = cv2.VideoCapture(i)
+    if cap.isOpened():
+        print("Working index:", i)
+        cap.release()
+
 camera = cv2.VideoCapture(0)
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
