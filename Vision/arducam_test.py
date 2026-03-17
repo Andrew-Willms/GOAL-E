@@ -5,7 +5,10 @@ from picamera2 import Picamera2
 picam2 = Picamera2()
 
 config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "RGB888"}
+    main={"size": (2560, 720), "format": "BGR888"},
+    controls={
+        "FrameDurationLimits": (10638, 10638)  # 10,638 µs = 94 FPS max
+    },
 )
 
 picam2.configure(config)
@@ -17,7 +20,7 @@ for i in range(0, 1000):
 
     frame = picam2.capture_array()
     current_time = time.time()
-    print(current_time - last_time)
+    print(1.0 / (current_time - last_time))  # FPS
 
     #cv2.imshow("Frame", frame)
 
