@@ -7,7 +7,7 @@ picam2 = Picamera2()
 config = picam2.create_video_configuration(
     main={"size": (2560, 720), "format": "BGR888"},
     controls={
-        "FrameDurationLimits": (11111, 11111)  # 10,638 µs = 94 FPS max
+        "FrameDurationLimits": (11000, 11000)  # 10,638 µs = 94 FPS max
     },
 )
 
