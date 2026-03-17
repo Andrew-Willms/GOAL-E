@@ -23,8 +23,7 @@ cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, vision_uti
 cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, vision_utilities.nothing)
 cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, vision_utilities.nothing)
 
-def get_ball_camera_coords() -> tuple[float, float, float] | None:
-    return None
+
 
 # (X, Y, Z)
 # When looking down the rink from behind the net
@@ -32,9 +31,17 @@ def get_ball_camera_coords() -> tuple[float, float, float] | None:
 # - Y is is up and down (distance from the ground plane)
 # - Z is forwards and backwards (down the ice)
 def get_puck_position() -> tuple[int, int, int] | None:
-    return
 
-def run_cv2() -> bool:
+    ball_camera_coords: tuple[tuple[int, int] | None, tuple[int, int] | None] = get_ball_camera_coords()
+
+    if ball_camera_coords[0] == None or ball_camera_coords[1] == None:
+        return None
+
+    return get_bal_position(ball_camera_coords)
+
+
+
+def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
 
     global lower_bound
     global upper_bound
@@ -49,7 +56,7 @@ def run_cv2() -> bool:
     successfulRead, frame = camera.read()
     if not successfulRead:
         print("Failed to capture frame")
-        return False
+        return None
     
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
@@ -60,8 +67,7 @@ def run_cv2() -> bool:
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
-        print("No ball found")
-        return True
+        return None
 
     largest_contour = max(contours, key = cv2.contourArea)
     center = vision_utilities.contour_center(largest_contour)
@@ -75,9 +81,16 @@ def run_cv2() -> bool:
 
     return True
 
+
+
+def get_bal_position(camera_coords: tuple[tuple[int, int], tuple[int, int]]) -> tuple[float, float, float]:
+
+
+    return
+
 def main():
 
-    while run_cv2():
+    while get_puck_position():
         pass
 
     camera.release()
