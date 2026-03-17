@@ -13,16 +13,16 @@ picam2.start()
 
 last_time = time.time()
 
-while True:
+for i in range(0, 1000):
 
     frame = picam2.capture_array()
     current_time = time.time()
     print(current_time - last_time)
 
-    cv2.imshow("Frame", frame)
+    #cv2.imshow("Frame", frame)
 
-    if cv2.waitKey(1) == ord('q'):
-        break
+    #if cv2.waitKey(1) == ord('q'):
+    #    break
 
     last_time = current_time
 
