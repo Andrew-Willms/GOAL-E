@@ -26,7 +26,12 @@ cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, vision_utilitie
 def get_ball_camera_coords() -> tuple[float, float, float] | None:
     return None
 
-def get_puck_position() -> (int, int, int) | None:
+# (X, Y, Z)
+# When looking down the rink from behind the net
+# - X is left to right
+# - Y is is up and down (distance from the ground plane)
+# - Z is forwards and backwards (down the ice)
+def get_puck_position() -> tuple[int, int, int] | None:
     return
 
 def run_cv2() -> bool:
