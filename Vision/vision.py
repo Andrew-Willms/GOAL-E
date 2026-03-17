@@ -4,6 +4,7 @@ import cv2
 import numpy
 import time
 from enum import Enum
+from picamera2 import Picamera2
 
 # Initialize Opencv2 Objects
 
@@ -31,12 +32,18 @@ pipeline = (
     "appsink drop=true"
 )
 
-camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+#picam2 = Picamera2()
 
+#config = picam2.create_video_configuration(
+#    main={"size": (640, 480), "format": "RGB888"}
+#)
+
+
+camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
 #camera = cv2.VideoCapture(0)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-camera.set(cv2.CAP_PROP_FPS, 30)
+#camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+#camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+#camera.set(cv2.CAP_PROP_FPS, 30)
 morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Color thresholds
