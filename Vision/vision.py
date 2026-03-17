@@ -23,23 +23,26 @@ from picamera2 import Picamera2
 #    "appsink drop=true"
 #)
 
-pipeline = (
-    "libcamerasrc ! "
-    "video/x-raw,width=2560,height=720,framerate=94/1 ! "
-    "bayer2rgb ! "
-    "videoconvert ! "
-    "video/x-raw,format=BGR ! "
-    "appsink drop=true"
-)
-
-#picam2 = Picamera2()
-
-#config = picam2.create_video_configuration(
-#    main={"size": (640, 480), "format": "RGB888"}
+#pipeline = (
+#    "libcamerasrc ! "
+#    "video/x-raw,width=2560,height=720,framerate=94/1 ! "
+#    "bayer2rgb ! "
+#    "videoconvert ! "
+#    "video/x-raw,format=BGR ! "
+#    "appsink drop=true"
 #)
 
+picam2 = Picamera2()
 
-camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+config = picam2.create_video_configuration(
+    main={"size": (640, 480), "format": "RGB888"}
+)
+
+picam2.configure(config)
+picam2.start()
+
+
+#camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
 #camera = cv2.VideoCapture(0)
 #camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 #camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -74,10 +77,12 @@ def run_cv2() -> bool:
     lower_bound[2] = cv2.getTrackbarPos("minimum value", "Mask")
     upper_bound[2] = cv2.getTrackbarPos("maximum value", "Mask")
 
-    successfulRead, frame = camera.read()
-    if not successfulRead:
-        print("Failed to capture frame")
-        return False
+    frame = picam2.capture_array()
+
+    #successfulRead, frame = camera.read()
+    #if not successfulRead:
+    #    print("Failed to capture frame")
+    #    return False
     
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
