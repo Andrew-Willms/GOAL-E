@@ -1,33 +1,55 @@
 import cv2
 import numpy
 import vision_utilities
+import threading
 
-# Initialize Opencv2 Objects
-camera = None
-camera = cv2.VideoCapture(0)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-camera.set(cv2.CAP_PROP_FPS, 30)
-morph_kernel = numpy.ones((5,5), numpy.uint8)
 
-# Color thresholds
+
+# Initialize Cameras
+picam2 = Picamera2()
+config = picam2.create_video_configuration(
+    main={"size": (2560, 720), "format": "BGR888"}, # also try "YUV420"
+    controls={
+        "FrameDurationLimits": (11500, 11500)
+    },
+)
+picam2.configure(config)
+picam2.start()
+
+# Initialize arrays
 lower_bound = numpy.array([138, 57, 190])
 upper_bound = numpy.array([177, 255, 255])
+morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Initialize Sliders
-cv2.namedWindow("Mask")
-cv2.createTrackbar("minimum hue", "Mask", lower_bound[0], 179, vision_utilities.nothing)
-cv2.createTrackbar("maximum hue", "Mask", upper_bound[0], 179, vision_utilities.nothing)
-cv2.createTrackbar("minimum saturation", "Mask", lower_bound[1], 255, vision_utilities.nothing)
-cv2.createTrackbar("maximum saturation", "Mask", upper_bound[1], 255, vision_utilities.nothing)
-cv2.createTrackbar("minimum value", "Mask", lower_bound[2], 255, vision_utilities.nothing)
-cv2.createTrackbar("maximum value", "Mask", upper_bound[2], 255, vision_utilities.nothing)
+cv2.namedWindow("Window")
+cv2.createTrackbar("minimum hue", "Window", lower_bound[0], 179, vision_utilities.nothing)
+cv2.createTrackbar("maximum hue", "Window", upper_bound[0], 179, vision_utilities.nothing)
+cv2.createTrackbar("minimum saturation", "Window", lower_bound[1], 255, vision_utilities.nothing)
+cv2.createTrackbar("maximum saturation", "Window", upper_bound[1], 255, vision_utilities.nothing)
+cv2.createTrackbar("minimum value", "Window", lower_bound[2], 255, vision_utilities.nothing)
+cv2.createTrackbar("maximum value", "Window", upper_bound[2], 255, vision_utilities.nothing)
+
+# Threading
+latest_frame = None
+lock = threading.Lock()
+
+def capture_loop():
+    global latest_frame
+    while True:
+        request = picam2.capture_request()
+        frame = request.make_array("main")
+        request.release()
+        with lock:
+            latest_frame = frame
+
+threading.Thread(target=capture_loop, daemon=True).start()
 
 
 
 # (X, Y, Z)
 # When looking down the rink from behind the net
-# - X is left to right
+# - X is left and right
 # - Y is is up and down (distance from the ground plane)
 # - Z is forwards and backwards (down the ice)
 def get_puck_position() -> tuple[int, int, int] | None:
@@ -46,54 +68,56 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     global lower_bound
     global upper_bound
 
-    lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Mask")
-    upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Mask")
-    lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Mask")
-    upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Mask")
-    lower_bound[2] = cv2.getTrackbarPos("minimum value", "Mask")
-    upper_bound[2] = cv2.getTrackbarPos("maximum value", "Mask")
+    lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Window")
+    upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Window")
+    lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Window")
+    upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Window")
+    lower_bound[2] = cv2.getTrackbarPos("minimum value", "Window")
+    upper_bound[2] = cv2.getTrackbarPos("maximum value", "Window")
 
-    successfulRead, frame = camera.read()
-    if not successfulRead:
-        print("Failed to capture frame")
-        return None
+    with lock:
+        frame = latest_frame.copy() if latest_frame is not None else None
+
+    if frame is None:
+        print("latest frame is None")
+        return (None, None)
     
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
+    #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
+    #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
-        return None
+        return (None, None)
 
     largest_contour = max(contours, key = cv2.contourArea)
     center = vision_utilities.contour_center(largest_contour)
-    cv2.circle(mask, center, 5, (0, 0, 255), -1)
+
+    # Colorize mask, indicate center, combine into a single frame
+    colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    cv2.circle(colorized_mask, center, 5, (0, 0, 255), -1)
+    combined = numpy.vstack((frame, colorized_mask))
 
     print(center)
-
-    cv2.imshow("Original", frame)
-    cv2.imshow("Mask", mask)
+    cv2.imshow("Window", combined)
     cv2.waitKey(1)
-
-    return True
+    return (center, center)
 
 
 
 def get_bal_position(camera_coords: tuple[tuple[int, int], tuple[int, int]]) -> tuple[float, float, float]:
-
-
     return
+
+
 
 def main():
 
-    while get_puck_position():
-        pass
+    while True:
+        get_puck_position()
 
-    camera.release()
     cv2.destroyAllWindows()
     return
 
