@@ -1,7 +1,6 @@
 import cv2
 import numpy
 from picamera2 import Picamera2
-import sys
 import threading
 import vision_utilities
 
@@ -10,17 +9,13 @@ import vision_utilities
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    #main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or whatever the form)
-    main={"size": (2560, 720)}, # at some point maybe try GRBG (or whatever the form)
+    main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
         "FrameDurationLimits": (11500, 11500)
     },
 )
 picam2.configure(config)
 picam2.start()
-
-print(picam2.camera_configuration())
-sys.exit()
 
 # Initialize arrays
 lower_bound = numpy.array([138, 57, 190])
@@ -87,10 +82,6 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     if frame is None:
         print("latest frame is None")
         return (None, None)
-
-    print(frame.dtype)
-    print(frame.shape)
-    sys.exit()
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
