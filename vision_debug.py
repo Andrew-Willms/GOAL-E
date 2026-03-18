@@ -84,7 +84,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         return (None, None)
     
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    hsv = cv2.cvtColor(frame, cv2.COLOR_YUV2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
     #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
