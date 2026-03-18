@@ -149,7 +149,7 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
 
     average_longitudinal_angle: float = (left_lens_longitudinal_angle + right_lens_longitudinal_angle) / 2
-    if math.abs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > 5:
+    if math.fabs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > 5:
         print("something fishy, these two should be quite similar")
 
     x_from_left_camera: float = math.cos(left_lateral_angle) * left_camera_distance
