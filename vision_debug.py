@@ -89,8 +89,8 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
     #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
-    left_contours, _ = cv2.findContours(mask[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    left_contours, _ = cv2.findContours(frame[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(frame[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     print(frame.shape)
     cv2.imshow("left half", hsv[:, :1280])
