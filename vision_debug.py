@@ -154,7 +154,7 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
 
     average_longitudinal_angle: float = (left_lens_longitudinal_angle + right_lens_longitudinal_angle) / 2
-    if math.fabs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > 5:
+    if math.fabs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > math.degrees(5):
         print("something fishy, these two should be quite similar")
 
     x_from_left_camera: float = math.cos(left_lateral_angle) * left_camera_distance
@@ -162,7 +162,11 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     y_from_left_camera: float = -math.cos(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
     z_from_left_camera: float = math.sin(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
 
-    ball_position: tuple[float, float, float] = (x_from_left_camera, y_from_left_camera, z_from_left_camera) + LEFT_CAMERA_POSITION
+    ball_position: tuple[float, float, float] = (
+        x_from_left_camera + LEFT_CAMERA_POSITION[0],
+        y_from_left_camera + LEFT_CAMERA_POSITION[1],
+        z_from_left_camera + LEFT_CAMERA_POSITION[2]
+    )
 
     return ball_position
 
