@@ -3,7 +3,6 @@ import numpy
 from picamera2 import Picamera2
 import threading
 import vision_utilities
-import time
 
 
 # Initialize Cameras
@@ -12,12 +11,6 @@ config = picam2.create_video_configuration(
     main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
         "FrameDurationLimits": (11500, 11500),
-
-        # Disable auto adjustments
-        "AeEnable": False,
-
-        "ExposureTime": 10000,
-        #"AwbEnable": False,
     },
 )
 picam2.configure(config)
@@ -69,10 +62,8 @@ def get_puck_position() -> tuple[int, int, int] | None:
     return get_bal_position(ball_camera_coords)
 
 
-last_time = time.time()
-def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
 
-    print(1/(time.time() - last_time))
+def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
 
     global lower_bound
     global upper_bound
