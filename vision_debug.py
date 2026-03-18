@@ -50,6 +50,7 @@ def capture_loop():
             latest_frame = frame
 
 threading.Thread(target=capture_loop, daemon=True).start()
+sys.exit()
 
 
 
