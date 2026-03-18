@@ -15,6 +15,8 @@ config = picam2.create_video_configuration(
 
         # Disable auto adjustments
         "AeEnable": False,
+
+        "ExposureTime": 10000,
         #"AwbEnable": False,
     },
 )
