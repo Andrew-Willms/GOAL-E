@@ -72,7 +72,13 @@ def get_ball_position() -> tuple[int, int, int] | None:
     if left_camera_coords == None or right_camera_coords == None:
         return None
 
-    return get_bal_position(left_camera_coords, right_camera_coords)
+    print((left_camera_coords, right_camera_coords), end="")
+
+    ball_position = get_bal_position(left_camera_coords, right_camera_coords)
+
+    print(ball_position, end="")
+    print()
+    return ball_position
 
 
 
@@ -92,7 +98,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         frame = latest_frame.copy() if latest_frame is not None else None
 
     if frame is None:
-        print("latest frame is None")
+        print("latest frame is None", end="")
         return (None, None)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
@@ -105,7 +111,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
-        print("no ball found")
+        print("no ball found", end="")
         return (None, None)
 
     largest_left_contour = max(left_contours, key = cv2.contourArea)
@@ -124,7 +130,6 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
     cv2.circle(mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
 
-    print((left_center, right_center))
     cv2.imshow("Window", mask)
     cv2.waitKey(1)
     return (left_center, right_center)
