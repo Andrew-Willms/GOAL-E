@@ -1,6 +1,7 @@
 import cv2
 import numpy
 from picamera2 import Picamera2
+import sys
 import threading
 import vision_utilities
 
@@ -9,7 +10,8 @@ import vision_utilities
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "RGB888"}, # also try "YUV420"BGR888
+    #main={"size": (2560, 720), "format": "RGB888"}, # also try "YUV420" # RGB888 works 
+    main={"size": (2560, 720)}, # also try "YUV420" # RGB888 works 
     controls={
         "FrameDurationLimits": (11500, 11500)
     },
@@ -83,6 +85,9 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         print("latest frame is None")
         return (None, None)
     
+    print(frame.shape)
+    sys.exit()
+
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
