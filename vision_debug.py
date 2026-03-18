@@ -98,7 +98,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         frame = latest_frame.copy() if latest_frame is not None else None
 
     if frame is None:
-        print("latest frame is None", end="")
+        print("latest frame is None")
         return (None, None)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
@@ -111,7 +111,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
-        print("no ball found", end="")
+        print("no ball found")
         return (None, None)
 
     largest_left_contour = max(left_contours, key = cv2.contourArea)
