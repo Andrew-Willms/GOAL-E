@@ -92,9 +92,6 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     left_contours, _ = cv2.findContours(mask[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    cv2.imshow("left half", frame[:, :1280])
-    cv2.imshow("right half", frame[:, 1280:2560])
-
     if len(left_contours) == 0 or len(right_contours) == 0:
         print("no ball found")
         return (None, None)
@@ -111,7 +108,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     combined = numpy.vstack((frame, colorized_mask))
 
     print((left_center, right_center))
-    #cv2.imshow("Window", combined)
+    cv2.imshow("Window", combined)
     cv2.waitKey(1)
     return (left_center, right_center)
 
