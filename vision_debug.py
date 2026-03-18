@@ -85,11 +85,11 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         print("latest frame is None")
         return (None, None)
     
+    print(picam2.camera_configuration())
+    print(picam2.stream_configuration("main"))
+
     print(frame.shape)
-    print(dir(frame.shape))
-    print(frame)
-    print(dir(frame))
-    print(vars(frame))
+    print(frame.dtype)
     sys.exit()
 
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
