@@ -89,24 +89,28 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
     #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    left_contours, _ = cv2.findContours(mask[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    if len(contours) == 0:
+    if len(left_contours) or len(right_contours) == 0:
         print("no ball found")
         return (None, None)
 
-    largest_contour = max(contours, key = cv2.contourArea)
-    center = vision_utilities.contour_center(largest_contour)
+    largest_left_contour = max(left_contours, key = cv2.contourArea)
+    left_center = vision_utilities.contour_center(largest_left_contour)
+    largest_right_contour = max(right_contours, key = cv2.contourArea)
+    right_center = vision_utilities.contour_center(largest_right_contour)
 
     # Colorize mask, indicate center, combine into a single frame
     colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-    cv2.circle(colorized_mask, center, 5, (0, 0, 255), -1)
+    cv2.circle(colorized_mask, left_center, 5, (0, 0, 255), -1)
+    cv2.circle(colorized_mask, right_center, 5, (0, 0, 255), -1)
     combined = numpy.vstack((frame, colorized_mask))
 
-    print(center)
+    print((left_center, right_center))
     cv2.imshow("Window", combined)
     cv2.waitKey(1)
-    return (center, center)
+    return (left_center, right_center)
 
 
 
