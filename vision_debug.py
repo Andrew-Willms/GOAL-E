@@ -93,8 +93,8 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     print(frame.shape)
-    cv2.imshow("left half", mask[:, :1280])
-    cv2.imshow("right half", mask[:, 1280:2560])
+    cv2.imshow("left half", hsv[:, :1280])
+    cv2.imshow("right half", hsv[:, 1280:2560])
 
     if len(left_contours) or len(right_contours) == 0:
         print("no ball found")
