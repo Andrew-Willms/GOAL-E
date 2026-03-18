@@ -131,8 +131,8 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
     left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
 
-    right_lens_longitudinal_angle: float = math.atan2((right_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
-    right_lens_lateral_angle: float = math.atan2((right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
 
     left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT
     right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
