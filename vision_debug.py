@@ -10,7 +10,8 @@ import vision_utilities
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "RGB888"},
+    #main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or whatever the form)
+    main={"size": (2560, 720)}, # at some point maybe try GRBG (or whatever the form)
     controls={
         "FrameDurationLimits": (11500, 11500)
     },
