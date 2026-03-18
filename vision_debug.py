@@ -58,8 +58,11 @@ threading.Thread(target=capture_loop, daemon=True).start()
 # (X, Y, Z)
 # When looking down the rink from behind the net
 # - X is left and right
+#    - X0 is centered on the net
 # - Y is is up and down (distance from the ground plane)
+#    - Y0 is on the ice
 # - Z is forwards and backwards (down the ice)
+#    - Z0 is on the outer goal line
 def get_puck_position() -> tuple[int, int, int] | None:
 
     left_camera_coords: tuple[int, int] | None
@@ -138,9 +141,20 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
     point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
 
-    left_lens_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
+    left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
 
-    return
+    average_longitudinal_angle: float = (left_lens_longitudinal_angle + right_lens_longitudinal_angle) / 2
+    if math.abs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > 5:
+        print("something fishy, these two should be quite similar")
+
+    x_from_left_camera: float = math.cos(left_lateral_angle) * left_camera_distance
+    yz_hypotenuse_from_left_camera: float = math.sin(left_lateral_angle) * left_camera_distance
+    y_from_left_camera: float = -math.cos(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
+    z_from_left_camera: float = math.sin(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
+
+    ball_position: tuple[float, float, float] = (x_from_left_camera, y_from_left_camera, z_from_left_camera) + LEFT_CAMERA_POSITION
+
+    return ball_position
 
 
 
