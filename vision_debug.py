@@ -63,7 +63,7 @@ threading.Thread(target=capture_loop, daemon=True).start()
 #    - Y0 is on the ice
 # - Z is forwards and backwards (down the ice)
 #    - Z0 is on the outer goal line
-def get_puck_position() -> tuple[int, int, int] | None:
+def get_ball_position() -> tuple[int, int, int] | None:
 
     left_camera_coords: tuple[int, int] | None
     right_camera_coords: tuple[int, int] | None
@@ -161,7 +161,7 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
 def main():
 
     while True:
-        get_puck_position()
+        get_ball_position()
 
     cv2.destroyAllWindows()
     return
