@@ -87,7 +87,9 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     
     print(frame.shape)
     print(dir(frame.shape))
-    print(vars(frame.shape))
+    print(frame)
+    print(dir(frame))
+    print(vars(frame))
     sys.exit()
 
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
