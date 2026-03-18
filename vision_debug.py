@@ -3,7 +3,7 @@ import numpy
 from picamera2 import Picamera2
 import threading
 import vision_utilities
-
+import time
 
 
 # Initialize Cameras
@@ -69,8 +69,10 @@ def get_puck_position() -> tuple[int, int, int] | None:
     return get_bal_position(ball_camera_coords)
 
 
-
+last_time = time.time()
 def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
+
+    print(1/(time.time() - last_time))
 
     global lower_bound
     global upper_bound
