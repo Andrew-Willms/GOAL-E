@@ -14,7 +14,7 @@ config = picam2.create_video_configuration(
         "FrameDurationLimits": (11500, 11500),
 
         # Disable auto adjustments
-        #"AeEnable": False,
+        "AeEnable": False,
         #"AwbEnable": False,
     },
 )
