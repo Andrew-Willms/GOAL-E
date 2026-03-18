@@ -15,7 +15,7 @@ config = picam2.create_video_configuration(
 
         # Disable auto adjustments
         #"AeEnable": False,
-        "AwbEnable": False,
+        #"AwbEnable": False,
     },
 )
 picam2.configure(config)
@@ -96,6 +96,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) == 0:
+        print("no ball found")
         return (None, None)
 
     largest_contour = max(contours, key = cv2.contourArea)
