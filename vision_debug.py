@@ -96,7 +96,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     cv2.imshow("left half", hsv[:, :1280])
     cv2.imshow("right half", hsv[:, 1280:2560])
 
-    if len(left_contours) or len(right_contours) == 0:
+    if len(left_contours) == 0 or len(right_contours) == 0:
         print("no ball found")
         return (None, None)
 
