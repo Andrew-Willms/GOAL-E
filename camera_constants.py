@@ -5,3 +5,5 @@ VERTICAL_RESOLUTION: int = 720
 
 HORIZONTAL_FOV: float = 90
 VERTICAL_FOV: float = 75
+
+LEFT_CAMERA_POSITION: tuple[float, float, float] = ()
