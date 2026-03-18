@@ -1,4 +1,6 @@
+from camera_constants import *
 import cv2
+import math
 import numpy
 from picamera2 import Picamera2
 import threading
@@ -60,12 +62,14 @@ threading.Thread(target=capture_loop, daemon=True).start()
 # - Z is forwards and backwards (down the ice)
 def get_puck_position() -> tuple[int, int, int] | None:
 
-    ball_camera_coords: tuple[tuple[int, int] | None, tuple[int, int] | None] = get_ball_camera_coords()
+    left_camera_coords: tuple[int, int] | None
+    right_camera_coords: tuple[int, int] | None
+    (left_camera_coords, right_camera_coords) = get_ball_camera_coords()
 
-    if ball_camera_coords[0] == None or ball_camera_coords[1] == None:
+    if left_camera_coords == None or right_camera_coords == None:
         return None
 
-    return get_bal_position(ball_camera_coords)
+    return get_bal_position(left_camera_coords, right_camera_coords)
 
 
 
@@ -119,7 +123,23 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
 
 
 
-def get_bal_position(camera_coords: tuple[tuple[int, int], tuple[int, int]]) -> tuple[float, float, float]:
+def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: tuple[int, int]) -> tuple[float, float, float]:
+
+    # positive longitudinal angle points down ice (away from goalie) ??
+    # positive lateral angle points to the right
+
+    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+
+    right_lens_longitudinal_angle: float = math.atan2((right_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_lateral_angle: float = math.atan2((right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+
+    left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT
+    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
+    point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
+
+    left_lens_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
+
     return
 
 
