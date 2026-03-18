@@ -10,7 +10,7 @@ import vision_utilities
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "BGR888"}, # also try "YUV420" # RGB888 works 
+    main={"size": (2560, 720), "format": "RGB888"}, # also try "YUV420" # RGB888 works 
     #main={"size": (2560, 720)}, # also try "YUV420" # RGB888 works 
     controls={
         "FrameDurationLimits": (11500, 11500)
