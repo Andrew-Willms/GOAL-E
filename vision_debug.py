@@ -17,8 +17,13 @@ picam2.configure(config)
 picam2.start()
 
 # Initialize arrays
-lower_bound = numpy.array([138, 57, 190])
-upper_bound = numpy.array([177, 255, 255])
+#lower_bound = numpy.array([138, 57, 190])
+#upper_bound = numpy.array([177, 255, 255])
+
+# at home
+lower_bound = numpy.array([113, 123, 77])
+upper_bound = numpy.array([137, 255, 255])
+
 morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Initialize Sliders
@@ -99,7 +104,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     largest_left_contour = max(left_contours, key = cv2.contourArea)
     left_center = vision_utilities.contour_center(largest_left_contour)
     largest_right_contour = max(right_contours, key = cv2.contourArea)
-    right_center = vision_utilities.contour_center(largest_right_contour)
+    right_center = vision_utilities.contour_center(largest_right_contour + numpy.array([1280, 0]))
 
     # Colorize mask, indicate center, combine into a single frame
     colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
