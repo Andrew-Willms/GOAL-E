@@ -19,6 +19,8 @@ config = picam2.create_video_configuration(
 picam2.configure(config)
 picam2.start()
 
+print(picam2.camera_configuration())
+
 # Initialize arrays
 lower_bound = numpy.array([138, 57, 190])
 upper_bound = numpy.array([177, 255, 255])
