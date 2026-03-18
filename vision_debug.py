@@ -20,6 +20,7 @@ picam2.configure(config)
 picam2.start()
 
 print(picam2.camera_configuration())
+sys.exit()
 
 # Initialize arrays
 lower_bound = numpy.array([138, 57, 190])
