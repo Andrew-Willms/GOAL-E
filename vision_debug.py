@@ -23,7 +23,7 @@ picam2.configure(config)
 picam2.start()
 
 if FROM_FILE:
-    video = cv2.VideoCapture('path_to_video.mp4')
+    video = cv2.VideoCapture('Vision/test_footage - 3.mp4')
     if not video.isOpened:
         print("could not open file")
         sys.exit()
