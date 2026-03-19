@@ -38,7 +38,6 @@ frames_since_big_move: int = 100000
 #    - Y0 is on the ice
 # - Z is forwards and backwards (down the ice)
 #    - Z0 is on the outer goal line
-#
 def get_ball_position() -> tuple[int, int, int, bool] | None:
 
     global frames_since_big_move

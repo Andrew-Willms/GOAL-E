@@ -69,6 +69,11 @@ threading.Thread(target=capture_loop, daemon=True).start()
 
 
 
+LARGE_MOVE_THRESHOLD: float = 0.18
+POSITION_CONSISTENCY_THRESHOLD: int = 30
+last_ball_position: tuple[float, float, float] = (0, 0, 0)
+frames_since_big_move: int = 100000
+
 # (X, Y, Z)
 # When looking down the rink from behind the net
 # - X is left and right
@@ -90,9 +95,16 @@ def get_ball_position() -> tuple[int, int, int] | None:
 
     ball_position = get_bal_position(left_camera_coords, right_camera_coords)
 
+    if vision_utilities.point_distance(left_camera_coords, right_camera_coords) > LARGE_MOVE_THRESHOLD:
+        frames_since_big_move = 0
+    else:
+        frames_since_big_move += 1
+
+    position_consistent: bool = frames_since_big_move >= POSITION_CONSISTENCY_THRESHOLD
+
     print(ball_position, end="")
     print()
-    return ball_position
+    return (ball_position[0], ball_position[1], ball_position[2], position_consistent)
 
 
 
