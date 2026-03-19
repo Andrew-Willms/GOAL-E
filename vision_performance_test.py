@@ -41,17 +41,7 @@ if FROM_FILE:
 lower_bound = numpy.array([127, 65, 27])
 upper_bound = numpy.array([152, 255, 255])
 
-morph_kernel = numpy.ones((5,5), numpy.uint8)
-
-# Initialize Sliders
-cv2.namedWindow("Window")
-cv2.setWindowProperty("Window", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-cv2.createTrackbar("minimum hue", "Window", lower_bound[0], 179, vision_utilities.nothing)
-cv2.createTrackbar("maximum hue", "Window", upper_bound[0], 179, vision_utilities.nothing)
-cv2.createTrackbar("minimum saturation", "Window", lower_bound[1], 255, vision_utilities.nothing)
-cv2.createTrackbar("maximum saturation", "Window", upper_bound[1], 255, vision_utilities.nothing)
-cv2.createTrackbar("minimum value", "Window", lower_bound[2], 255, vision_utilities.nothing)
-cv2.createTrackbar("maximum value", "Window", upper_bound[2], 255, vision_utilities.nothing)
+#morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Threading
 #latest_frame = None
@@ -131,7 +121,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     largest_right_contour = max(right_contours, key = cv2.contourArea)
     right_center = vision_utilities.contour_center(largest_right_contour)
 
-    cv2.waitKey(1)
+    #cv2.waitKey(1)
     return (left_center, right_center)
 
 
@@ -179,7 +169,7 @@ def main():
         frame_counter += 1
         get_ball_position()
 
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
     return
 
 if __name__ == "__main__":
