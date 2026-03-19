@@ -33,8 +33,12 @@ if FROM_FILE:
 #upper_bound = numpy.array([177, 255, 255])
 
 # at home
-lower_bound = numpy.array([113, 123, 77])
-upper_bound = numpy.array([137, 255, 255])
+#lower_bound = numpy.array([113, 123, 77])
+#upper_bound = numpy.array([137, 255, 255])
+
+# Night Lighting
+lower_bound = numpy.array([127, 65, 27])
+upper_bound = numpy.array([152, 255, 255])
 
 morph_kernel = numpy.ones((5,5), numpy.uint8)
 
