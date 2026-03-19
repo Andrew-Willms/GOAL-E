@@ -13,15 +13,15 @@ FROM_FILE: bool = True
 
 
 # Initialize Cameras
-picam2 = Picamera2()
-config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
-    controls={
-        "FrameDurationLimits": (11500, 11500),
-    },
-)
-picam2.configure(config)
-picam2.start()
+#picam2 = Picamera2()
+#config = picam2.create_video_configuration(
+#    main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
+#    controls={
+#        "FrameDurationLimits": (11500, 11500),
+#    },
+#)
+#picam2.configure(config)
+#picam2.start()
 
 if FROM_FILE:
     video = cv2.VideoCapture('Vision/test_footage - 3.mp4')
@@ -54,19 +54,19 @@ cv2.createTrackbar("minimum value", "Window", lower_bound[2], 255, vision_utilit
 cv2.createTrackbar("maximum value", "Window", upper_bound[2], 255, vision_utilities.nothing)
 
 # Threading
-latest_frame = None
-lock = threading.Lock()
+#latest_frame = None
+#lock = threading.Lock()
 
-def capture_loop():
-    global latest_frame
-    while True:
-        request = picam2.capture_request()
-        frame = request.make_array("main")
-        request.release()
-        with lock:
-            latest_frame = frame
+#def capture_loop():
+#    global latest_frame
+#    while True:
+#        request = picam2.capture_request()
+#        frame = request.make_array("main")
+#        request.release()
+#        with lock:
+#            latest_frame = frame
 
-threading.Thread(target=capture_loop, daemon=True).start()
+#threading.Thread(target=capture_loop, daemon=True).start()
 
 
 
@@ -106,11 +106,12 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
             print(frame_counter/(time.time() - start_time))
             sys.exit()
     else:
-        with lock:
-            frame = latest_frame.copy() if latest_frame is not None else None
-        if frame is None:
-            print("latest frame is None")
-            return (None, None)
+        pass
+        #with lock:
+        #    frame = latest_frame.copy() if latest_frame is not None else None
+        #if frame is None:
+        #    print("latest frame is None")
+        #    return (None, None)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
