@@ -3,8 +3,12 @@ import cv2
 import math
 import numpy
 from picamera2 import Picamera2
+import sys
 import threading
 import vision_utilities
+
+FROM_FILE: bool = True
+
 
 
 # Initialize Cameras
@@ -17,6 +21,12 @@ config = picam2.create_video_configuration(
 )
 picam2.configure(config)
 picam2.start()
+
+if FROM_FILE:
+    video = cv2.VideoCapture('path_to_video.mp4')
+    if not video.isOpened:
+        print("could not open file")
+        sys.exit()
 
 # Initialize arrays
 #lower_bound = numpy.array([138, 57, 190])
@@ -94,12 +104,17 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     lower_bound[2] = cv2.getTrackbarPos("minimum value", "Window")
     upper_bound[2] = cv2.getTrackbarPos("maximum value", "Window")
 
-    with lock:
-        frame = latest_frame.copy() if latest_frame is not None else None
-
-    if frame is None:
-        print("latest frame is None")
-        return (None, None)
+    if FROM_FILE:
+        success, frame = video.read()
+        if not success:
+            print("could not read frame")
+            return (None, None)     
+    else:
+        with lock:
+            frame = latest_frame.copy() if latest_frame is not None else None
+        if frame is None:
+            print("latest frame is None")
+            return (None, None)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
