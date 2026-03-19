@@ -165,6 +165,8 @@ start_time = time.time()
 frame_counter = 0
 def main():
 
+    global frame_counter
+
     while True:
         frame_counter += 1
         get_ball_position()
