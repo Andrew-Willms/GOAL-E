@@ -1,4 +1,5 @@
 import cv2
+import math
 
 
 
@@ -15,3 +16,6 @@ def contour_center(contour) -> tuple[int, int]:
         return 0, 0
 
     return int(moments["m10"] / moments["m00"]), int(moments["m01"] / moments["m00"])
+
+def point_distance(a: tuple[float, float, float], b: tuple[float, float, float]):
+    return math.sqrt( (a[0] - b[0])**2 + (a[1] - b[1])**2 + (a[2] - b[2])**2 )
