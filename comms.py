@@ -3,7 +3,7 @@ import struct
 
 
 
-SERIAL_PORT: str = "/dev/ttyS0" 
+SERIAL_PORT: str = "/dev/serial0" 
 BAUD_RATE: int = 115200
 START_MESSAGE_FLAG: int = 0
 
