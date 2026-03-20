@@ -206,8 +206,9 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     return ball_position
 
 
-last_time: float = time.time()
 def main():
+
+    last_time: float = time.time()
 
     while True:
         get_ball_position()
