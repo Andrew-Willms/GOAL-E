@@ -14,7 +14,7 @@ def clamp(number: float, minimum: float, maximum: float) -> float:
 
 while True:
 
-    keys = input
+    keys = input()
 
     if "w" in keys:
         extension += extension_change
