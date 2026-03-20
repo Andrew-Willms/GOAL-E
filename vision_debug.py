@@ -158,7 +158,8 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     largest_right_contour = max(right_contours, key = cv2.contourArea)
     right_center = vision_utilities.contour_center(largest_right_contour)
 
-    print(cv2.contourArea(largest_left_contour))
+    if cv2.contourArea(largest_left_contour) < 150 or cv2.contourArea(largest_right_contour):
+        return (None, None)
 
     # tool slow, trying without
     # Colorize mask, indicate center, combine into a single frame
