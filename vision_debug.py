@@ -10,8 +10,7 @@ import vision_utilities
 
 FROM_FILE: bool = False
 
-
-
+# changes
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
