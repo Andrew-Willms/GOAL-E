@@ -5,6 +5,7 @@ import numpy
 from picamera2 import Picamera2
 import sys
 import threading
+import time
 import vision_utilities
 
 FROM_FILE: bool = False
@@ -16,7 +17,7 @@ picam2 = Picamera2()
 config = picam2.create_video_configuration(
     main={"size": (3840, 1200), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
-        "FrameDurationLimits": (26300, 26300),
+        "FrameDurationLimits": (25000, 25000),
     },
 )
 picam2.configure(config)
@@ -205,11 +206,13 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     return ball_position
 
 
-
+last_time: float = time.time()
 def main():
 
     while True:
         get_ball_position()
+        print(1/(time.time() - last_time))
+        last_time = time.time()
 
     cv2.destroyAllWindows()
     return
