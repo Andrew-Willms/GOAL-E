@@ -15,24 +15,25 @@ def clamp(number: float, minimum: float, maximum: float) -> float:
 
 while True:
 
-    if keyboard.is_pressed('w'):
+    keys = input
+
+    if 'w' in keys:
         extension += extension_change
 
-    if keyboard.is_pressed('a'):
+    if 'a' in keys:
         extension -= extension_change
 
 
-    if keyboard.is_pressed('w'):
+    if 'd' in keys:
         rotation += rotation_change
 
-    if keyboard.is_pressed('a'):
+    if 's' in keys:
         rotation -= rotation_change
     
-
-    if keyboard.is_pressed('up'):
+    if 'k' in keys:
         elevation = MAX_ELEVATION
 
-    if keyboard.is_pressed('down'):
+    if 'm' in keys:
         elevation = MIN_ELEVATION
     
 
