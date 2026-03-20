@@ -33,28 +33,28 @@ while True:
 
     keys = get_single_char_unix()
 
-    if "w" == keys:
+    if "w" in keys:
         extension += extension_change
 
-    if "a" == keys:
+    if "a" in keys:
         extension = extension - extension_change
 
 
-    if "d" == keys:
+    if "d" in keys:
         rotation += rotation_change
 
-    if "s" == keys:
+    if "s" in keys:
         rotation = rotation - rotation_change
     
 
-    if "k" == keys:
+    if "k" in keys:
         elevation = MAX_ELEVATION
 
-    if "m" == keys:
+    if "m" in keys:
         elevation = MIN_ELEVATION
 
 
-    if "q" == keys:
+    if "q" in keys:
         sys.exit()
     
 
