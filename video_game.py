@@ -5,7 +5,7 @@ import comms
 import sys, tty, termios
 
 def get_single_char_unix():
-    print("Press a key: ", end="", flush=True)
+    #print("Press a key: ", end="", flush=True)
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
