@@ -20,8 +20,6 @@ FAME_TIME: int = 25000
 HORIZONTAL_CENTER: float = HORIZONTAL_RESOLUTION / 2 - 0.5
 VERITCAL_CENTER: float = VERTICAL_RESOLUTION / 2 - 0.5
 
-LEFT_CAMERA_POSITION: tuple[float, float, float] = ()
-
 FOCAL_LENGTH: float = 3.6 # mm
 PIXEL_SIZE: float = 0.003 # mm
 
