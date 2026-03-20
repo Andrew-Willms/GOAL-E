@@ -106,7 +106,7 @@ def get_ball_position() -> tuple[int, int, int] | None:
     position_consistent: bool = frames_since_big_move >= POSITION_CONSISTENCY_THRESHOLD
 
     print(ball_position, end="")
-    print(position_consistent, end="")
+    #print(position_consistent, end="")
     print()
     return (ball_position[0], ball_position[1], ball_position[2], position_consistent)
 
@@ -212,12 +212,12 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
 
 def main():
 
-    last_time: float = time.time()
+    #last_time: float = time.time()
 
     while True:
         get_ball_position()
-        print(1/(time.time() - last_time))
-        last_time = time.time()
+        #print(1/(time.time() - last_time))
+        #last_time = time.time()
 
     cv2.destroyAllWindows()
     return
