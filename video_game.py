@@ -39,7 +39,7 @@ while True:
     rotation = clamp(rotation, MIN_ROTATION, MAX_ROTATION)
     extension = clamp(extension, MIN_EXTENSION, MAX_EXTENSION)
 
-    comms.send_to_arduino(0, (rotation, extension, elevation), 0)
+    comms.send_to_arduino((rotation, extension, elevation), 0)
 
     # Small delay to prevent the loop from consuming too much CPU
     time.sleep(0.01)
