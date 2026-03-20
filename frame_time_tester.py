@@ -12,7 +12,7 @@ picam2 = Picamera2()
 config = picam2.create_video_configuration(
     main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
-        "FrameDurationLimits": (12000, 12000),
+        "FrameDurationLimits": (18000, 18000),
     },
 )
 picam2.configure(config)
