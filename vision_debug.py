@@ -226,6 +226,7 @@ def main():
 
     while True:
         get_ball_position()
+        cv2.waitKey(1)
         #print(1/(time.time() - last_time))
         #last_time = time.time()
 
