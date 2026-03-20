@@ -36,14 +36,14 @@ while True:
     if "w" in keys:
         extension += extension_change
 
-    if "a" in keys:
+    if "s" in keys:
         extension = extension - extension_change
 
 
     if "d" in keys:
         rotation += rotation_change
 
-    if "s" in keys:
+    if "a" in keys:
         rotation = rotation - rotation_change
     
 
