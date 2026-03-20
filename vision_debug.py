@@ -212,7 +212,7 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
     z_from_left_camera: float = math.sin(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
 
     ball_position: tuple[float, float, float] = (
-        x_from_left_camera*2 + LEFT_CAMERA_POSITION[0],
+        x_from_left_camera + LEFT_CAMERA_POSITION[0],
         y_from_left_camera + LEFT_CAMERA_POSITION[1],
         z_from_left_camera + LEFT_CAMERA_POSITION[2]
     )
