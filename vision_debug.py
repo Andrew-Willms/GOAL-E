@@ -97,7 +97,7 @@ def get_ball_position() -> tuple[int, int, int] | None:
     if left_camera_coords == None or right_camera_coords == None:
         return None
 
-    print((left_camera_coords, right_camera_coords), end="")
+    print((left_camera_coords, right_camera_coords))
 
     ball_position = trigonometry(left_camera_coords, right_camera_coords)
 
