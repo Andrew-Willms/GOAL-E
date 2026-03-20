@@ -105,9 +105,7 @@ def get_ball_position() -> tuple[int, int, int] | None:
 
     position_consistent: bool = frames_since_big_move >= POSITION_CONSISTENCY_THRESHOLD
 
-    print(ball_position, end="")
-    #print(position_consistent, end="")
-    print()
+    print(ball_position)
     return (ball_position[0], ball_position[1], ball_position[2], position_consistent)
 
 
@@ -185,6 +183,9 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
 
     right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
     right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    
+    print(f"left_lens_lateral_angle {left_lens_lateral_angle}")
+    print(f"right_lens_lateral_angle {right_lens_lateral_angle}")
 
     left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT
     right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
