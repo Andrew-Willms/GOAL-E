@@ -1,4 +1,3 @@
-import keyboard
 import time
 from robot_constants import *
 import comms
