@@ -12,9 +12,11 @@ FROM_FILE: bool = True
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (2560, 720), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
+    main={
+        "size": (FULL_STERO_HORIZONTAL_RESOLUTION, FULL_VERTICAL_RESOLUTION),
+        "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
-        "FrameDurationLimits": (11500, 11500),
+        "FrameDurationLimits": (FAME_TIME, FAME_TIME),
     },
 )
 picam2.configure(config)
@@ -68,8 +70,8 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    left_contours, _ = cv2.findContours(mask[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    left_contours, _ = cv2.findContours(mask[:, :HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(mask[:, HORIZONTAL_RESOLUTION:STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
         return (None, None)

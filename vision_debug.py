@@ -15,9 +15,11 @@ FROM_FILE: bool = False
 # Initialize Cameras
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (3840, 1200), "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
+    main={
+        "size": (FULL_STERO_HORIZONTAL_RESOLUTION, FULL_VERTICAL_RESOLUTION),
+        "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
-        "FrameDurationLimits": (25000, 25000),
+        "FrameDurationLimits": (FAME_TIME, FAME_TIME),
     },
 )
 picam2.configure(config)
