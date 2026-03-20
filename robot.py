@@ -15,6 +15,8 @@ while True:
         comms.send_to_arduino(NEUTRAL_POSITION, DRIFT_TO_NEUTRAL_MAX_POWER)
         continue
 
+    print(ball_position)
+
     target_position: tuple[float, float, float] = planning.get_target_position((ball_position[0], ball_position[1], ball_position[2]))
 
     if ball_position[3]:
