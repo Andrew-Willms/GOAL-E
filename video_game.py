@@ -37,14 +37,14 @@ while True:
         extension += extension_change
 
     if "a" == keys:
-        extension -= extension_change
+        extension = extension - extension_change
 
 
     if "d" == keys:
         rotation += rotation_change
 
     if "s" == keys:
-        rotation -= rotation_change
+        rotation = rotation - rotation_change
     
 
     if "k" == keys:
