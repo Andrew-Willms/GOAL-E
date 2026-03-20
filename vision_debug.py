@@ -190,8 +190,8 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
     print(f"left_lens_lateral_angle {left_lens_lateral_angle}")
     print(f"right_lens_lateral_angle {right_lens_lateral_angle}")
 
-    left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT
-    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
+    left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT_LEFT
+    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT_LEFT
     point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
 
     print(f"point_lateral_angle {point_lateral_angle}")
