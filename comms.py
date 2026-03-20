@@ -18,4 +18,3 @@ def send_to_arduino(target_postion: tuple[float, float, float], max_power: int):
     # H indicating an unsigned uint16
     data: bytes = struct.pack("<BBfff", START_MESSAGE_FLAG, max_power, target_postion[0], target_postion[1], target_postion[2])
     serial_port.write(data)
-    print(f"Sent: {target_postion[0]}, {target_postion[1]}, {target_postion[2]}")
