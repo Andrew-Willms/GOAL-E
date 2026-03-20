@@ -97,7 +97,7 @@ def get_bal_position(left_camera_coords: tuple[int, int], right_camera_coords: t
     right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
 
     left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT_LEFT
-    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT_LEFT
+    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT_RIGHT
     point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
 
     left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
