@@ -135,14 +135,16 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
             print("latest frame is None")
             return (None, None)
 
+    frame = cv2.resize(frame, (HORIZONTAL_RESOLUTION, VERTICAL_RESOLUTION))
+
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
     #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
     #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
 
-    left_contours, _ = cv2.findContours(mask[:, :1280], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    right_contours, _ = cv2.findContours(mask[:, 1280:2560], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    left_contours, _ = cv2.findContours(mask[:, :HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(mask[:, HORIZONTAL_RESOLUTION:STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
         print("no ball found")
