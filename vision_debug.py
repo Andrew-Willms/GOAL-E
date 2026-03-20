@@ -95,7 +95,7 @@ def get_ball_position() -> tuple[int, int, int] | None:
 
     ball_position = get_bal_position(left_camera_coords, right_camera_coords)
 
-    if vision_utilities.point_distance(left_camera_coords, right_camera_coords) > LARGE_MOVE_THRESHOLD:
+    if vision_utilities.point_distance(ball_position, last_ball_position) > LARGE_MOVE_THRESHOLD:
         frames_since_big_move = 0
     else:
         frames_since_big_move += 1
