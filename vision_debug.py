@@ -7,7 +7,7 @@ import sys
 import threading
 import vision_utilities
 
-FROM_FILE: bool = True
+FROM_FILE: bool = False
 
 
 
@@ -154,16 +154,16 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
 
     # tool slow, trying without
     # Colorize mask, indicate center, combine into a single frame
-    colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-    cv2.circle(colorized_mask, left_center, 5, (0, 0, 255), -1)
-    cv2.circle(colorized_mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
-    combined = numpy.vstack((frame, colorized_mask))
-    cv2.imshow("Window", combined)
+    #colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    #cv2.circle(colorized_mask, left_center, 5, (0, 0, 255), -1)
+    #cv2.circle(colorized_mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
+    #combined = numpy.vstack((frame, colorized_mask))
+    #cv2.imshow("Window", combined)
 
     # Iindicate center, draw
-    #cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
-    #cv2.circle(mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
-    #cv2.imshow("Window", mask)
+    cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
+    cv2.circle(mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
+    cv2.imshow("Window", mask)
 
     cv2.waitKey(1)
     return (left_center, right_center)
