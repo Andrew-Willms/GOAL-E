@@ -190,11 +190,17 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
     right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT
     point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
 
+    print(f"point_lateral_angle {point_lateral_angle}")
+
     left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
+
+    print(f"left_camera_distance {left_camera_distance}")
 
     average_longitudinal_angle: float = (left_lens_longitudinal_angle + right_lens_longitudinal_angle) / 2
     if math.fabs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > math.degrees(5):
         print("something fishy, these two should be quite similar")
+
+    print(f"average_longitudinal_angle {average_longitudinal_angle}")
 
     x_from_left_camera: float = math.cos(left_lateral_angle) * left_camera_distance
     yz_hypotenuse_from_left_camera: float = math.sin(left_lateral_angle) * left_camera_distance
