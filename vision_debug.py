@@ -167,7 +167,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
 
     # Iindicate center, draw
     cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
-    cv2.circle(mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
+    cv2.circle(mask, right_center + numpy.array([HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
     cv2.imshow("Window", mask)
 
     cv2.waitKey(1)
