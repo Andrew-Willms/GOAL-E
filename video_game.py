@@ -16,23 +16,23 @@ while True:
 
     keys = input
 
-    if 'w' in keys:
+    if "w" in keys:
         extension += extension_change
 
-    if 'a' in keys:
+    if "a" in keys:
         extension -= extension_change
 
 
-    if 'd' in keys:
+    if "d" in keys:
         rotation += rotation_change
 
-    if 's' in keys:
+    if "s" in keys:
         rotation -= rotation_change
     
-    if 'k' in keys:
+    if "k" in keys:
         elevation = MAX_ELEVATION
 
-    if 'm' in keys:
+    if "m" in keys:
         elevation = MIN_ELEVATION
     
 
