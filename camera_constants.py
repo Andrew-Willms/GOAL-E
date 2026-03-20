@@ -25,7 +25,7 @@ LEFT_CAMERA_POSITION: tuple[float, float, float] = ()
 FOCAL_LENGTH: float = 3.6 # mm
 PIXEL_SIZE: float = 0.003 # mm
 
-CAMERA_TILT: float = 0.05323254 # rad
+CAMERA_TILT: float = 0.0650414399 # rad
 #INTER_LENS_DISTANCE: float = 0.3271774 # m, planned
 INTER_LENS_DISTANCE: float = 0.3045 # m, actual
 
