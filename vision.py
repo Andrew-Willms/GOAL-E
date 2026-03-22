@@ -16,7 +16,7 @@ config = picam2.create_video_configuration(
         "size": (FULL_STERO_HORIZONTAL_RESOLUTION, FULL_VERTICAL_RESOLUTION),
         "format": "RGB888"}, # at some point maybe try GRBG (or XBGR8888) and convert later in open cv, see if there is a performance difference
     controls={
-        "FrameDurationLimits": (FAME_TIME, FAME_TIME),
+        "FrameDurationLimits": (FRAME_TIME, FRAME_TIME),
     },
 )
 picam2.configure(config)
