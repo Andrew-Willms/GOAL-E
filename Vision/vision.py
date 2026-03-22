@@ -48,6 +48,9 @@ def run_cv2() -> bool:
 
     frame = picam2.capture_array()
 
+    if frame == None:
+        print("frame is none")
+
     #successfulRead, frame = camera.read()
     #if not successfulRead:
     #    print("Failed to capture frame")
