@@ -67,6 +67,10 @@ def get_ball_position() -> tuple[int, int, int, bool] | None:
 def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
 
     frame = picam2.capture_array()
+
+    if frame == None:
+        print("frame is none")
+
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
