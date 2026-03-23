@@ -10,6 +10,8 @@ import vision_utilities
 
 FROM_FILE: bool = False
 
+
+
 # changes
 # Initialize Cameras
 picam2 = Picamera2()
@@ -29,23 +31,6 @@ if FROM_FILE:
     if not video.isOpened:
         print("could not open file")
         sys.exit()
-
-# Initialize arrays
-#lower_bound = numpy.array([138, 57, 190])
-#upper_bound = numpy.array([177, 255, 255])
-
-# at home
-#lower_bound = numpy.array([113, 123, 77])
-#upper_bound = numpy.array([137, 255, 255])
-
-# Night Lighting
-#lower_bound = numpy.array([127, 65, 27])
-#upper_bound = numpy.array([152, 255, 255])
-
-lower_bound = numpy.array([43, 64, 60])
-upper_bound = numpy.array([62, 255, 255])
-
-morph_kernel = numpy.ones((5,5), numpy.uint8)
 
 # Initialize Sliders
 cv2.namedWindow("Window")
@@ -74,8 +59,6 @@ threading.Thread(target=capture_loop, daemon=True).start()
 
 
 
-LARGE_MOVE_THRESHOLD: float = 0.18
-POSITION_CONSISTENCY_THRESHOLD: int = 30
 last_ball_position: tuple[float, float, float] = (0, 0, 0)
 frames_since_big_move: int = 100000
 
@@ -87,7 +70,7 @@ frames_since_big_move: int = 100000
 #    - Y0 is on the ice
 # - Z is forwards and backwards (down the ice)
 #    - Z0 is on the outer goal line
-def get_ball_position() -> tuple[int, int, int] | None:
+def get_ball_position() -> tuple[int, int, int, bool] | None:
 
     left_camera_coords: tuple[int, int] | None
     right_camera_coords: tuple[int, int] | None
@@ -137,16 +120,13 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
             print("latest frame is None")
             return (None, None)
 
-    frame = cv2.resize(frame, (STERO_HORIZONTAL_RESOLUTION, VERTICAL_RESOLUTION))
+    frame = cv2.resize(frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-    #mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, morph_kernel)
-    #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, morph_kernel)
-
-    left_contours, _ = cv2.findContours(mask[:, :HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    right_contours, _ = cv2.findContours(mask[:, HORIZONTAL_RESOLUTION:STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    left_contours, _ = cv2.findContours(mask[:, :DEBUG_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(mask[:, DEBUG_HORIZONTAL_RESOLUTION:DEBUG_STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
         print("no ball found")
@@ -157,7 +137,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     largest_right_contour = max(right_contours, key = cv2.contourArea)
     right_center = vision_utilities.contour_center(largest_right_contour)
 
-    if cv2.contourArea(largest_left_contour) < 150 or cv2.contourArea(largest_right_contour):
+    if cv2.contourArea(largest_left_contour) < MINIMUM_CONTOUR_AREA or cv2.contourArea(largest_right_contour) < MINIMUM_CONTOUR_AREA:
         return (None, None)
 
     # tool slow, trying without
@@ -170,7 +150,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
 
     # Iindicate center, draw
     cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
-    cv2.circle(mask, right_center + numpy.array([HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
+    cv2.circle(mask, right_center + numpy.array([DEBUG_HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
     cv2.imshow("Window", mask)
 
     cv2.waitKey(1)
@@ -183,11 +163,11 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
     # positive longitudinal angle points down ice (away from goalie) ??
     # positive lateral angle points to the right
 
-    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
-    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
 
-    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
-    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
     
     print(f"left_lens_lateral_angle {left_lens_lateral_angle}")
     print(f"right_lens_lateral_angle {right_lens_lateral_angle}")

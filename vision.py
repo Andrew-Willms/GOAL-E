@@ -1,7 +1,7 @@
 from camera_constants import *
 import cv2
 import math
-import numpy
+import sys
 from picamera2 import Picamera2
 import vision_utilities
 
@@ -22,13 +22,15 @@ config = picam2.create_video_configuration(
 picam2.configure(config)
 picam2.start()
 
-# Initialize arrays
-lower_bound = numpy.array([127, 65, 27])
-upper_bound = numpy.array([152, 255, 255])
+if FROM_FILE:
+    video = cv2.VideoCapture('Vision/test_footage - 3.mp4')
+    if not video.isOpened:
+        print("could not open file")
+        sys.exit()
 
 
-LARGE_MOVE_THRESHOLD: float = 0.18
-POSITION_CONSISTENCY_THRESHOLD: int = 30
+
+
 last_ball_position: tuple[float, float, float] = (0, 0, 0)
 frames_since_big_move: int = 100000
 
@@ -66,7 +68,14 @@ def get_ball_position() -> tuple[int, int, int, bool] | None:
 
 def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
 
-    frame = picam2.capture_array()
+    if FROM_FILE:
+        success, frame = video.read()
+        if not success:
+            print("could not read frame")
+            video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            return (None, None) 
+    else:
+        frame = picam2.capture_array()
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
@@ -127,7 +136,6 @@ def main():
 
     while True:
         get_ball_position()
-        cv2.waitKey(1)
 
     return
 
