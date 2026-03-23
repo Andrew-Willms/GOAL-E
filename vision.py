@@ -81,7 +81,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     else:
         frame = picam2.capture_array()
 
-    frame = cv2.resize(frame, (STERO_HORIZONTAL_RESOLUTION, HORIZONTAL_RESOLUTION))
+    frame = cv2.resize(frame, (STERO_HORIZONTAL_RESOLUTION, VERTICAL_RESOLUTION))
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
