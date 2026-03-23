@@ -8,7 +8,7 @@ import threading
 import time
 import vision_utilities
 
-FROM_FILE: bool = False
+FROM_FILE: bool = True
 
 
 
@@ -34,7 +34,6 @@ if FROM_FILE:
 
 # Initialize Sliders
 cv2.namedWindow("Window")
-#cv2.setWindowProperty("Window", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 cv2.createTrackbar("minimum hue", "Window", lower_bound[0], 179, vision_utilities.nothing)
 cv2.createTrackbar("maximum hue", "Window", upper_bound[0], 179, vision_utilities.nothing)
 cv2.createTrackbar("minimum saturation", "Window", lower_bound[1], 255, vision_utilities.nothing)
