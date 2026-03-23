@@ -33,12 +33,12 @@ INTER_LENS_DISTANCE: float = 0.3045 # m, actual
 LEFT_CAMERA_POSITION: tuple[float, float, float] = (-0.15225, 2.082, 1.7328007) # m
 
 # Pink at Night
-#lower_bound = numpy.array([127, 65, 27])
-#upper_bound = numpy.array([152, 255, 255])
+lower_bound = numpy.array([127, 65, 27])
+upper_bound = numpy.array([152, 255, 255])
 
 # Green During the Day
-lower_bound = numpy.array([43, 64, 60])
-upper_bound = numpy.array([62, 255, 255])
+#lower_bound = numpy.array([43, 64, 60])
+#upper_bound = numpy.array([62, 255, 255])
 
 MORPH_KERNEL = numpy.ones((5,5), numpy.uint8)
 
