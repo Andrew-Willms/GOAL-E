@@ -44,6 +44,7 @@ frames_since_big_move: int = 100000
 #    - Z0 is on the outer goal line
 def get_ball_position() -> tuple[int, int, int, bool] | None:
 
+    global last_ball_position
     global frames_since_big_move
 
     left_camera_coords: tuple[int, int] | None
