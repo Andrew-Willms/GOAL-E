@@ -90,6 +90,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     right_contours, _ = cv2.findContours(mask[:, HORIZONTAL_RESOLUTION:STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(left_contours) == 0 or len(right_contours) == 0:
+        print(f"no contours {len(left_contours)} {len(right_contours)}")
         return (None, None)
 
     largest_left_contour = max(left_contours, key = cv2.contourArea)
@@ -98,6 +99,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     right_center = vision_utilities.contour_center(largest_right_contour)
 
     if cv2.contourArea(largest_left_contour) < MINIMUM_CONTOUR_AREA or cv2.contourArea(largest_right_contour) < MINIMUM_CONTOUR_AREA:
+        print(f"contours too small {cv2.contourArea(largest_left_contour)} {cv2.contourArea(largest_right_contour)}")
         return (None, None)
 
     return (left_center, right_center)
