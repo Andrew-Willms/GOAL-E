@@ -8,7 +8,7 @@ import threading
 import time
 import vision_utilities
 
-FROM_FILE: bool = True
+FROM_FILE: bool = False
 
 
 
