@@ -22,7 +22,7 @@ VERITCAL_CENTER: float = VERTICAL_RESOLUTION / 2 - 0.5
 DEBUG_HORIZONTAL_CENTER: float = DEBUG_HORIZONTAL_RESOLUTION / 2 - 0.5
 DEBUG_VERITCAL_CENTER: float = DEBUG_VERTICAL_RESOLUTION / 2 - 0.5
 
-FOCAL_LENGTH: float = 3.6 # mm
+FOCAL_LENGTH: float = 1.8 # mm # 3.6, the specs say 3.6 but it's definitely half that
 PIXEL_SIZE: float = 0.003 # mm
 
 CAMERA_TILT_RIGHT: float = 0.0650414399 # rad, #cad: 0.05323254,
