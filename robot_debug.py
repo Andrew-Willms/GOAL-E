@@ -17,8 +17,6 @@ while True:
 
     target_position: tuple[float, float, float] = planning.get_target_position((ball_position[0], ball_position[1], ball_position[2]))
 
-    print(target_position)
-
     if ball_position[3]:
         comms.send_to_arduino(target_position, REGULAR_MAX_POWER)
     else:
