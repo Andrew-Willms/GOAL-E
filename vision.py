@@ -51,6 +51,8 @@ def get_ball_position() -> tuple[int, int, int, bool] | None:
     right_camera_coords: tuple[int, int] | None
     (left_camera_coords, right_camera_coords) = get_ball_camera_coords()
 
+    print((left_camera_coords, right_camera_coords))
+
     if left_camera_coords == None or right_camera_coords == None:
         return None
 
@@ -95,7 +97,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     largest_right_contour = max(right_contours, key = cv2.contourArea)
     right_center = vision_utilities.contour_center(largest_right_contour)
 
-    if cv2.contourArea(largest_left_contour) < 150 or cv2.contourArea(largest_right_contour):
+    if cv2.contourArea(largest_left_contour) < MINIMUM_CONTOUR_AREA or cv2.contourArea(largest_right_contour) < MINIMUM_CONTOUR_AREA:
         return (None, None)
 
     return (left_center, right_center)
