@@ -28,7 +28,9 @@ PIXEL_SIZE: float = 0.003 # mm
 CAMERA_TILT_RIGHT: float = 0.0650414399 # rad, #cad: 0.05323254,
 CAMERA_TILT_LEFT: float = 0.06362923658554 # left lens: 0.06362923658554
 #INTER_LENS_DISTANCE: float = 0.3271774 # m, planned
-INTER_LENS_DISTANCE: float = 0.3045 # m, actual
+#INTER_LENS_DISTANCE: float = 0.3045 # m, actual
+INTER_LENS_DISTANCE: float = 0.3445 # m, test footage
+
 
 LEFT_CAMERA_POSITION: tuple[float, float, float] = (-0.15225, 2.082, 1.7328007) # m
 
