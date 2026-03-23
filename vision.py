@@ -5,7 +5,7 @@ import sys
 from picamera2 import Picamera2
 import vision_utilities
 
-FROM_FILE: bool = True
+FROM_FILE: bool = False
 
 
 
