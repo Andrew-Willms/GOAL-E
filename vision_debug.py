@@ -112,15 +112,17 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
         if not success:
             print("could not read frame")
             video.set(cv2.CAP_PROP_POS_FRAMES, 0)
-            return (None, None)     
+            return (None, None)   
+        frame = cv2.resize(latest_frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
     else:
         with lock:
-            frame = latest_frame.copy() if latest_frame is not None else None
+            #frame = latest_frame.copy() if latest_frame is not None else None
+            frame = cv2.resize(latest_frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
         if frame is None:
             print("latest frame is None")
             return (None, None)
 
-    frame = cv2.resize(frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
+    #frame = cv2.resize(frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
     mask = cv2.inRange(hsv, lower_bound, upper_bound)
