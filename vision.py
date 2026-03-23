@@ -88,10 +88,6 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     left_contours, _ = cv2.findContours(mask[:, :HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     right_contours, _ = cv2.findContours(mask[:, HORIZONTAL_RESOLUTION:STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    # Iindicate center, draw
-    cv2.imshow("Window", mask)
-    cv2.waitKey(1)
-
     if len(left_contours) == 0 or len(right_contours) == 0:
         print(f"no contours {len(left_contours)} {len(right_contours)}")
         return (None, None)
