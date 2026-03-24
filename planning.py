@@ -18,7 +18,6 @@ def get_target_position(puck_position: tuple[float, float, float]) -> tuple[floa
     else:
         elevation_target = MAX_ELEVATION
 
-    elevation_target: float = (puck_position[2] - MIN_EXTENSION_THRESHOLD) * PUCK_DISTANCE_TO_EXTENSION_RATIO
     elevation_target = clamp(elevation_target, MIN_ELEVATION, MAX_ELEVATION)
 
     return (puck_angle_from_pivot, extension_targate, elevation_target)
