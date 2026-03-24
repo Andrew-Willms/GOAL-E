@@ -2,10 +2,12 @@ MIN_ROTATION: float = -45.0
 MAX_ROTATION: float = 45.0
 
 MIN_EXTENSION: float = 0.0
-MAX_EXTENSION: float = 0.6096
+MAX_EXTENSION: float = 0.55 
+#MAX_EXTENSION: float = 0.6096 # robot cad
 
 MIN_ELEVATION: float = 0.0
-MAX_ELEVATION: float = 0.2667
+MAX_ELEVATION: float = 0.25
+#MAX_ELEVATION: float = 0.2667 # robot cad
 
 PIVOT_DEPTH_IN_NET: float = 0.1651
 
