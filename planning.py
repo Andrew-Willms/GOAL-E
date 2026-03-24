@@ -12,7 +12,7 @@ def get_target_position(puck_position: tuple[float, float, float]) -> tuple[floa
     extension_targate: float = (puck_position[2] - MIN_EXTENSION_THRESHOLD) * PUCK_DISTANCE_TO_EXTENSION_RATIO
     extension_targate = clamp(extension_targate, MIN_EXTENSION, MAX_EXTENSION)
 
-    if puck_position[0] < BUTTERFLY_DISTANCE_THRESHOLD and puck_position[1] < BUTTERFLY_HEIGHT_THRESHOLD:
+    if puck_position[2] < BUTTERFLY_DISTANCE_THRESHOLD and puck_position[1] < BUTTERFLY_HEIGHT_THRESHOLD:
         elevation_target = MIN_ELEVATION
     else:
         elevation_target = MAX_ELEVATION
