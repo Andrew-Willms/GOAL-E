@@ -203,11 +203,14 @@ void loop() {
   mLin.write(currentLinCmd);
 
   // Vertical Bang-Bang Control
-  int vCmd = 90;
-  if (abs(VERT_TARGET - vPos) > 15.0f) {
-      vCmd = (VERT_TARGET > vPos) ? 105 : 70;
-  }
-  if (vPos > VERT_MAX_SAFE || vPos < -100.0f) vCmd = 90;
+  int vCmd = 98;
+  if (VERT_TARGET - vPos > 15.0f)
+    vCmd = 105;
+  else if (VERT_TARGET - vPos < -15.0f)
+    vCmd = 70;
+
+  if (vPos > VERT_MAX_SAFE || vPos < -100.0f)
+    vCmd = 90;
   mVert.write(vCmd);
 
   // --- E. TELEMETRY (DETAILED) ---
