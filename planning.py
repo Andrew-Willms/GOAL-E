@@ -14,6 +14,7 @@ def get_target_position(puck_position: tuple[float, float, float]) -> tuple[floa
 
     if puck_position[2] < BUTTERFLY_DISTANCE_THRESHOLD and puck_position[1] < BUTTERFLY_HEIGHT_THRESHOLD:
         elevation_target = MIN_ELEVATION
+        print("min elevation")
     else:
         elevation_target = MAX_ELEVATION
 
