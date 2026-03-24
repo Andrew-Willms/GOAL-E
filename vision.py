@@ -54,7 +54,7 @@ def get_ball_position() -> tuple[int, int, int, bool] | None:
     if left_camera_coords == None or right_camera_coords == None:
         return None
 
-    print((left_camera_coords, right_camera_coords))
+    #print((left_camera_coords, right_camera_coords))
 
     ball_position = get_bal_position(left_camera_coords, right_camera_coords)
 
