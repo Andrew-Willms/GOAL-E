@@ -133,7 +133,12 @@ void loop() {
         
         // Vertical Mapping: 0.0 -> 0.0, 0.27 -> 900.0
         // We use 3333.33f as the multiplier (900 / 0.27)
-        VERT_TARGET = constrain(PI_RAW_VERT * 3333.33f, 0.0f, VERT_MAX_SAFE);
+        //VERT_TARGET = constrain(PI_RAW_VERT * 3333.33f, 0.0f, VERT_MAX_SAFE);
+
+        if (PI_RAW_VERT > 0.25)
+          VERT_TARGET = 900;
+        else
+          VERT_TARGET = -5;
       }
     }
   }
@@ -202,12 +207,37 @@ void loop() {
   mRot.write(currentRotCmd);
   mLin.write(currentLinCmd);
 
-  // Vertical Bang-Bang Control
   int vCmd = 98;
-  if (VERT_TARGET - vPos > 15.0f)
-   vCmd = 105;
-  else if (VERT_TARGET - vPos < -15.0f)
-   vCmd = 70;
+  if (VERT_TARGET == 900) {
+
+    if (vPos > 985)
+      vCmd = 98;
+    else if (vPos > 970)
+      vCmd = 105;
+    else
+      vCmd = 115;
+
+  } else {
+
+    if (vPos > 30)
+      vCmd = 60;
+    else if (vPos > 15)
+      vCmd = 70;
+    else
+      vCmd = 98;
+
+  }
+
+  // Vertical Bang-Bang Control
+  //int vCmd = 98;
+  //if (VERT_TARGET - vPos > 30.0f)
+  // vCmd = 105;
+  //if (VERT_TARGET - vPos > 15.0f)
+  // vCmd = 115;
+  //else if (VERT_TARGET - vPos < -30.0f)
+  // vCmd = 60;
+  //else if (VERT_TARGET - vPos < -15.0f)
+  // vCmd = 70;
 
   if (vPos > VERT_MAX_SAFE || vPos < -100.0f)
     vCmd = 90;
