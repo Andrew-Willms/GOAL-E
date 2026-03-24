@@ -6,8 +6,7 @@ MAX_EXTENSION: float = 0.55
 #MAX_EXTENSION: float = 0.6096 # robot cad
 
 MIN_ELEVATION: float = 0.0
-MAX_ELEVATION: float = 0.25
-#MAX_ELEVATION: float = 0.2667 # robot cad
+MAX_ELEVATION: float = 0.2667 # robot cad
 
 PIVOT_DEPTH_IN_NET: float = 0.1651
 
