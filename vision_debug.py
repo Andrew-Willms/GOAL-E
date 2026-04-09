@@ -146,7 +146,7 @@ def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | 
     # Colorize mask, indicate center, combine into a single frame
     #colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
     #cv2.circle(colorized_mask, left_center, 5, (0, 0, 255), -1)
-    #cv2.circle(colorized_mask, right_center + numpy.array([1280, 0]), 5, (0, 0, 255), -1)
+    #cv2.circle(colorized_mask, right_center + numpy.array([DEBUG_HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
     #combined = numpy.vstack((frame, colorized_mask))
     #cv2.imshow("Window", combined)
 
@@ -165,11 +165,11 @@ def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple
     # positive longitudinal angle points down ice (away from goalie) ??
     # positive lateral angle points to the right
 
-    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
-    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
 
-    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
-    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE, FOCAL_LENGTH)
+    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
     
     print(f"left_lens_lateral_angle {left_lens_lateral_angle}")
     print(f"right_lens_lateral_angle {right_lens_lateral_angle}")

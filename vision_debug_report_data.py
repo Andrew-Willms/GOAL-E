@@ -1,0 +1,200 @@
+from camera_constants import *
+import cv2
+import math
+import numpy
+import sys
+import time
+import vision_utilities
+
+SAVE_VIDEO: bool = True
+
+
+
+# changes
+# Initialize Cameras
+video = cv2.VideoCapture('Vision/test_footage - 3.mp4')
+if not video.isOpened:
+    print("could not open file")
+    sys.exit()
+video.set(cv2.CAP_PROP_POS_FRAMES, 50)
+
+if (SAVE_VIDEO):
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    video_output = cv2.VideoWriter('output.avi', fourcc, 30, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION * 2))
+    if not video_output.isOpened():
+        print("VideoWriter failed to open")
+        sys.exit()
+
+# Initialize Sliders
+cv2.namedWindow("Window")
+cv2.createTrackbar("minimum hue", "Window", lower_bound[0], 179, vision_utilities.nothing)
+cv2.createTrackbar("maximum hue", "Window", upper_bound[0], 179, vision_utilities.nothing)
+cv2.createTrackbar("minimum saturation", "Window", lower_bound[1], 255, vision_utilities.nothing)
+cv2.createTrackbar("maximum saturation", "Window", upper_bound[1], 255, vision_utilities.nothing)
+cv2.createTrackbar("minimum value", "Window", lower_bound[2], 255, vision_utilities.nothing)
+cv2.createTrackbar("maximum value", "Window", upper_bound[2], 255, vision_utilities.nothing)
+
+last_ball_position: tuple[float, float, float] = (0, 0, 0)
+frames_since_big_move: int = 100000
+
+
+
+# (X, Y, Z)
+# When looking down the rink from behind the net
+# - X is left and right
+#    - X0 is centered on the net
+# - Y is is up and down (distance from the ground plane)
+#    - Y0 is on the ice
+# - Z is forwards and backwards (down the ice)
+#    - Z0 is on the outer goal line
+def get_ball_position() -> tuple[int, int, int, bool] | None:
+
+    global last_ball_position
+    global frames_since_big_move
+
+    left_camera_coords: tuple[int, int] | None
+    right_camera_coords: tuple[int, int] | None
+    (left_camera_coords, right_camera_coords) = get_ball_camera_coords()
+
+    if left_camera_coords == None or right_camera_coords == None:
+        return None
+
+    print((left_camera_coords, right_camera_coords))
+
+    ball_position = trigonometry(left_camera_coords, right_camera_coords)
+
+    if vision_utilities.point_distance(ball_position, last_ball_position) > LARGE_MOVE_THRESHOLD:
+        frames_since_big_move = 0
+    else:
+        frames_since_big_move += 1
+
+    position_consistent: bool = frames_since_big_move >= POSITION_CONSISTENCY_THRESHOLD
+
+    print(ball_position)
+    return (ball_position[0], ball_position[1], ball_position[2], position_consistent)
+
+
+
+def get_ball_camera_coords() -> tuple[tuple[int, int] | None, tuple[int, int] | None]:
+
+    global lower_bound
+    global upper_bound
+
+    lower_bound[0] = cv2.getTrackbarPos("minimum hue", "Window")
+    upper_bound[0] = cv2.getTrackbarPos("maximum hue", "Window")
+    lower_bound[1] = cv2.getTrackbarPos("minimum saturation", "Window")
+    upper_bound[1] = cv2.getTrackbarPos("maximum saturation", "Window")
+    lower_bound[2] = cv2.getTrackbarPos("minimum value", "Window")
+    upper_bound[2] = cv2.getTrackbarPos("maximum value", "Window")
+
+    success, frame = video.read()
+    if not success:
+        print("could not read frame")
+        #video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        video.release()
+        video_output.release()
+        cv2.destroyAllWindows()
+        return (None, None)  
+
+    frame = cv2.resize(frame, (DEBUG_STERO_HORIZONTAL_RESOLUTION, DEBUG_VERTICAL_RESOLUTION))
+
+    hsv = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
+    mask = cv2.inRange(hsv, lower_bound, upper_bound)
+
+    left_contours, _ = cv2.findContours(mask[:, :DEBUG_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    right_contours, _ = cv2.findContours(mask[:, DEBUG_HORIZONTAL_RESOLUTION:DEBUG_STERO_HORIZONTAL_RESOLUTION], cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(left_contours) == 0 or len(right_contours) == 0:
+        print("no ball found")
+        return (None, None)
+
+    largest_left_contour = max(left_contours, key = cv2.contourArea)
+    left_center = vision_utilities.contour_center(largest_left_contour)
+    largest_right_contour = max(right_contours, key = cv2.contourArea)
+    right_center = vision_utilities.contour_center(largest_right_contour)
+
+    if cv2.contourArea(largest_left_contour) < MINIMUM_CONTOUR_AREA or cv2.contourArea(largest_right_contour) < MINIMUM_CONTOUR_AREA:
+        return (None, None)
+
+    # tool slow, trying without
+    # Colorize mask, indicate center, combine into a single frame
+    colorized_mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    cv2.circle(colorized_mask, left_center, 5, (0, 0, 255), -1)
+    cv2.circle(colorized_mask, right_center + numpy.array([DEBUG_HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
+    combined = numpy.vstack((frame, colorized_mask))
+    cv2.imshow("Window", combined)
+    video_output.write(combined)
+
+    # Iindicate center, draw
+    #cv2.circle(mask, left_center, 5, (0, 0, 255), -1)
+    #cv2.circle(mask, right_center + numpy.array([DEBUG_HORIZONTAL_RESOLUTION, 0]), 5, (0, 0, 255), -1)
+    #cv2.imshow("Window", mask)
+
+    return (left_center, right_center)
+
+
+
+def trigonometry(left_camera_coords: tuple[int, int], right_camera_coords: tuple[int, int]) -> tuple[float, float, float]:
+
+    # positive longitudinal angle points down ice (away from goalie) ??
+    # positive lateral angle points to the right
+
+    left_lens_longitudinal_angle: float = math.atan2((left_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+    left_lens_lateral_angle: float = math.atan2((left_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+
+    right_lens_longitudinal_angle: float = math.atan2(-(right_camera_coords[0] - DEBUG_HORIZONTAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+    right_lens_lateral_angle: float = math.atan2(-(right_camera_coords[1] - DEBUG_VERITCAL_CENTER) * PIXEL_SIZE_DEBUG, FOCAL_LENGTH)
+    
+    print(f"left_lens_lateral_angle {left_lens_lateral_angle}")
+    print(f"right_lens_lateral_angle {right_lens_lateral_angle}")
+
+    left_lateral_angle: float = math.pi / 2 - left_lens_lateral_angle - CAMERA_TILT_LEFT
+    right_lateral_angle: float = math.pi / 2 + right_lens_lateral_angle - CAMERA_TILT_LEFT
+    point_lateral_angle: float = math.pi - left_lateral_angle - right_lateral_angle
+
+    print(f"point_lateral_angle {point_lateral_angle}")
+
+    left_camera_distance: float = (INTER_LENS_DISTANCE / math.sin(point_lateral_angle)) * math.sin(right_lateral_angle) # sine law
+
+    print(f"left_camera_distance {left_camera_distance}")
+
+    average_longitudinal_angle: float = (left_lens_longitudinal_angle + right_lens_longitudinal_angle) / 2
+    if math.fabs(left_lens_longitudinal_angle - right_lens_longitudinal_angle) > math.degrees(5):
+        print("something fishy, these two should be quite similar")
+
+    print(f"average_longitudinal_angle {average_longitudinal_angle}")
+
+    x_from_left_camera: float = math.cos(left_lateral_angle) * left_camera_distance
+    yz_hypotenuse_from_left_camera: float = math.sin(left_lateral_angle) * left_camera_distance
+    y_from_left_camera: float = -math.cos(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
+    z_from_left_camera: float = math.sin(average_longitudinal_angle) * yz_hypotenuse_from_left_camera
+
+    ball_position: tuple[float, float, float] = (
+        x_from_left_camera + LEFT_CAMERA_POSITION[0],
+        y_from_left_camera + LEFT_CAMERA_POSITION[1],
+        z_from_left_camera + LEFT_CAMERA_POSITION[2]
+    )
+
+    return ball_position
+
+
+def main():
+
+    #last_time: float = time.time()
+
+    while True:
+        get_ball_position()
+
+        if cv2.waitKey(0) & 0xFF == ord('q'):
+            break
+
+    video.release()
+    video_output.release()
+    cv2.destroyAllWindows()
+
+    print("video_output released")
+
+    return
+
+if __name__ == "__main__":
+    main()
